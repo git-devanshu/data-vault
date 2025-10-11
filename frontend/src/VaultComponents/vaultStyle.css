@@ -1,0 +1,118 @@
+.vault-container {
+    color: #ffffff;
+    font-family: "Arial", sans-serif;
+    background-color: var(--dark);
+    margin: 0;
+    height: auto;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.vault-grid {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+}
+
+.label-list-div{
+    border-radius: 10px;
+    width: 100%;
+    background-color: var(--dark-2);
+    padding: 10px;
+    height: fit-content;
+}
+
+.grid-inner-left{
+    padding: 10px;
+}
+
+.grid-inner-right{
+    padding: 10px;
+}
+
+.label-item{
+    display: grid;
+    align-items: center;
+    grid-template-columns: calc(100% - 40px) 40px;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.label-item-selected{
+    display: grid;
+    align-items: center;
+    grid-template-columns: calc(100% - 40px) 40px;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--dark);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.label-item:hover{
+    background-color: var(--dark-3);
+    border-radius: 10px;
+}
+
+.password-card-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;   
+}
+
+.password-card{
+    background-color: var(--dark-2);
+    min-width: 320px;
+    border-radius: 16px;
+}
+
+@media (max-width: 970px){
+    .vault-grid{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about-grid{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .password-card-div{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px){
+    .vault-heading{
+        text-align: center;
+    }
+
+    .grid-inner-right{
+        margin-top: 30px;
+        padding: 0;
+    }
+
+    .grid-inner-left{
+        padding: 0;
+    }
+
+    .vault-grid{
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .about-grid{
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

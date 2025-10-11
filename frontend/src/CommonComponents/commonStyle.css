@@ -1,0 +1,60 @@
+.popup-container{
+    position: fixed;
+    top: 100px;
+    left: calc((100% - 340px)/2);
+    width: 340px;
+    height: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px black;
+    background-color: var(--dark-2);
+    z-index: 2;
+}
+
+.help-popup-container{
+    position: fixed;
+    top: 60px;
+    left: calc((100% - 340px)/2);
+    width: 340px;
+    height: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px black;
+    background-color: var(--dark-2);
+    z-index: 2;
+}
+
+.modal-container{
+    color: #ffffff;
+    font-family: "Arial", sans-serif;
+    background-color: var(--dark);
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.security-pin-modal{
+    top: 100px;
+    width: 360px;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cancel-button {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.cancel-button:hover {
+    background-color: rgb(192, 6, 6);
+}
