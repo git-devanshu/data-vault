@@ -60,7 +60,7 @@ export default function AddLabelPopup({setShowPopup}) {
                 <label className="login-label">Label Name</label>
                 <input type="text" name='labelName' value={label} onChange={(e)=>setLabel(e.target.value)} required maxLength={100} className="login-input" />
 
-                <Button disabled={isLoading} onClick={createLabel} leftIcon={<PlusSquareIcon/>}>Create Label</Button>
+                <Button disabled={isLoading} type="submit" onClick={createLabel} leftIcon={<PlusSquareIcon/>}>Create Label</Button>
             </form>
         </div>
     )

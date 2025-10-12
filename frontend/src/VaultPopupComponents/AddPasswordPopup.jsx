@@ -99,7 +99,7 @@ export default function AddPasswordPopup({setShowPopup, refresh, setRefresh}) {
                     })}
                 </select>
 
-                <Button disabled={isLoading} onClick={addPassword} leftIcon={<PlusSquareIcon/>}>Add Password</Button>
+                <Button type="submit" disabled={isLoading} onClick={addPassword} leftIcon={<PlusSquareIcon/>}>Add Password</Button>
             </form>
         </div>
     )

@@ -95,7 +95,7 @@ export default function AddExpensePopup({setShowPopup, setRefresh, refresh, trac
                     <option value="other">Other</option>
                 </select>
 
-                <Button disabled={isLoading} onClick={createExpense}>Add Expense</Button>
+                <Button disabled={isLoading} type="submit" onClick={createExpense}>Add Expense</Button>
             </form>
         </div>
     );

@@ -88,7 +88,7 @@ export default function PinModal() {
                     Forgot Security Pin?
                 </a>
                 <HStack spacing={3} style={{margin: '0 auto'}}>
-                    <Button colorScheme='blue' disabled={isLoading} onClick={checkSecurityPin}>
+                    <Button colorScheme='blue' type="submit" disabled={isLoading} onClick={checkSecurityPin}>
                         Confirm
                     </Button>
                     <Button colorScheme='red' onClick={navigateToHome}>

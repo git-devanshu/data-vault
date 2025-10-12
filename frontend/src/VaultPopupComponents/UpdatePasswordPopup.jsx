@@ -103,7 +103,7 @@ export default function UpdatePasswordPopup({setShowPopup, refresh, setRefresh, 
                     })}
                 </select>
 
-                <Button disabled={isLoading} onClick={updatePassword} leftIcon={<EditIcon/>}>Update Password</Button>
+                <Button disabled={isLoading} type="submit" onClick={updatePassword} leftIcon={<EditIcon/>}>Update Password</Button>
             </form>
         </div>
     )

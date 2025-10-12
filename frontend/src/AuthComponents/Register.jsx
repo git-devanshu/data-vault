@@ -127,7 +127,7 @@ export default function Register() {
                         <input type="email" name='email' value={user.email} onChange={handleChange} required className="login-input" />
                         <h2 style={{fontSize: '16px', fontWeight: 300, textAlign: 'center', marginTop: '0', marginBottom: '15px'}}>If the email address is already used, try another.</h2>
 
-                        <Button disabled={isLoading} onClick={checkEmailAvailability} colorScheme="blue">
+                        <Button disabled={isLoading} type="submit" onClick={checkEmailAvailability} colorScheme="blue">
                             Next
                         </Button>
                     </form>

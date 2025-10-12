@@ -74,7 +74,7 @@ export default function AddTaskPopup({setShowPopup, refresh, setRefresh}) {
                 <label className="login-label">Task Deadline</label>
                 <input type="date" name='endDate' value={endDate} onChange={(e)=> setEndDate(e.target.value)} required className="login-input" />
 
-                <Button disabled={isLoading} onClick={addTask} leftIcon={<PlusSquareIcon/>}>Add Task</Button>
+                <Button disabled={isLoading} type="submit" onClick={addTask} leftIcon={<PlusSquareIcon/>}>Add Task</Button>
             </form>
         </div>
     );

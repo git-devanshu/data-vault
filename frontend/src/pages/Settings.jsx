@@ -131,7 +131,7 @@ export default function Settings() {
 
                         <ButtonGroup>
                             <Button onClick={navigateToHome} >Back</Button>
-                            <Button onClick={saveSettings} disabled={isLoading} colorScheme='blue' width='min-content'>Save Settings</Button>
+                            <Button onClick={saveSettings} type="submit" disabled={isLoading} colorScheme='blue' width='min-content'>Save Settings</Button>
                         </ButtonGroup>
                     </form>
                 </div>

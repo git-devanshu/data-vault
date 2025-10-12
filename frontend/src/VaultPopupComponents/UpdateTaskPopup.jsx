@@ -122,7 +122,7 @@ export default function UpdateTaskPopup({setShowPopup, refresh, setRefresh, data
                 </select>
 
                 <ButtonGroup>
-                    <Button width='full' disabled={!isChanged || isLoading} onClick={updateTask} leftIcon={<EditIcon/>}>Update</Button>
+                    <Button width='full' disabled={!isChanged || isLoading} type="submit" onClick={updateTask} leftIcon={<EditIcon/>}>Update</Button>
                     <Button colorScheme='red' width='full' disabled={isLoading} onClick={()=> setShowDeleteTaskPopup(true)} leftIcon={<DeleteIcon/>}>Delete</Button>
                 </ButtonGroup>
             </form>

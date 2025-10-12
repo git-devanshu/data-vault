@@ -182,7 +182,7 @@ export default function UpdateNotePopup({data, setShowPopup}) {
                 <textarea type="text" name='note' value={note} onChange={(e)=> {setNote(e.target.value); setChanged(true)}} required maxLength={2000} className="login-input" style={{height: '200px'}} />
 
                 <ButtonGroup>
-                    <Button disabled={!changed || isLoading} onClick={updateNote} leftIcon={<EditIcon />}>Update</Button>
+                    <Button disabled={!changed || isLoading} type="submit" onClick={updateNote} leftIcon={<EditIcon />}>Update</Button>
                     <Button disabled={isLoading} colorScheme='red' onClick={()=> setShowDeleteNotePopup(true)} leftIcon={<DeleteIcon />}>Delete</Button>
                 </ButtonGroup>
             </form>

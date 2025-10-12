@@ -69,7 +69,7 @@ export default function AddTrackerPopup({setShowPopup}) {
                 <label className="login-label">Amount to be tracked</label>
                 <input type="number" name='trackingAmount' value={trackingAmount} onChange={(e)=>setTrackingAmount(e.target.value)} required className="login-input" />
 
-                <Button disabled={isLoading} onClick={createTracker} leftIcon={<PlusSquareIcon/>}>Create Tracker</Button>
+                <Button disabled={isLoading} type="submit" onClick={createTracker} leftIcon={<PlusSquareIcon/>}>Create Tracker</Button>
             </form>
         </div>
     );
