@@ -58,7 +58,7 @@ export default function Home() {
                     <MenuButton title='profile'>
                         <Avatar size="sm" name={name} />
                     </MenuButton>
-                    <MenuList flexDir='column' bg="#1b2232"ccolor='white' minWidth='160px' borderColor='#222b3e' width='50px' alignItems='center'>
+                    <MenuList flexDir='column' bg="#1b2232" color='white' minWidth='160px' width='fit-content' borderColor='#222b3e' alignItems='center'>
                         <Text mx={3} my={1} textAlign='center' color='#2daaff'>{name}</Text>
                         <Divider mt={2} />
                         <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={navigateToSettings} icon={<SettingsIcon/>}>Settings</MenuItem>
