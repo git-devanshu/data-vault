@@ -1,17 +1,17 @@
 import {createMasterKey, encryptMasterKey, decryptMasterKey, encryptData, decryptData} from './utils/cipherFunctions.js';
 
-const password = "Judsgfu58dgJDGd@7dschu";
-const securityPin = "464228";
+const password = "Judsgfu58dgJDGd@7dschu"; // demo text for testing
+const securityPin = "464228"; // demo text for testing
 
 let passEncKey, passSalt, passNonce, pinEncKey, pinSalt, pinNonce;
 let passDecMasterKey, pinDecMasterKey;
 
-const data1 = "he heeee...! Mummy";
+const data1 = "this is a demo text for testing";
 let encData1, decData1, nonce1;
 
 const data2 = {
-    platform : "Mongo DB Atlas",
-    username : "devanshulanjudkar9@gmail.com",
+    platform : "Testing",
+    username : "testuser1@gmail.com",
     password : "google OAuth",
     label : "Other"
 }

@@ -3,7 +3,7 @@ const { Users } = require("../models/userModel");
 // GET - /api/admin/v1/users
 const getAllUsers = async(req, res) =>{
     try{
-        const data = await Users.find({privilege: "user"}).select("email name isBlocked"); // _id is included by default
+        const data = await Users.find({privilege: "user"}).select("email name isBlocked newPassKeyGenerated"); // _id is included by default
         res.status(200).json(data);
     }
     catch(error){

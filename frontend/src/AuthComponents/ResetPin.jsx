@@ -89,7 +89,7 @@ export default function ResetPin() {
             const { encryptedMasterKey: pinEncryptedKey, salt: pinSalt, nonce: pinNonce } = await encryptMasterKey(masterKey, securityPin);
             const hashedPin = createHash(securityPin);
 
-            const res = axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/reset-pin`, {securityPin: hashedPin, pinEncryptedKey, pinSalt, pinNonce}, {headers : {
+            const res = await axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/reset-pin`, {securityPin: hashedPin, pinEncryptedKey, pinSalt, pinNonce}, {headers : {
                 Authorization : `Bearer ${token}`
             }});
 

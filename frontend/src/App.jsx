@@ -54,10 +54,10 @@ export default function App() {
             <Toaster
                 position='top-right'
                 toastOptions={{
-                    style: {background: "linear-gradient(to left, #454545, #1a202f)", color: "white", fontSize: "15px", height: '55px', width: '400px', borderRadius: '2px', borderLeft: '5px solid #666'},
-                    success: {style: { borderLeft: "5px solid #22c55e" }},
-                    error: {style: { borderLeft: "5px solid #ef4444" }},
-                    loading : {style: {borderLeft: "5px solid #d1d5db"}}
+                    style: { fontSize: "15px", height: '55px', width: '400px', borderRadius: '8px', fontWeight: 500 },
+                    success: {style: { border: '1px solid #22c55e', borderLeft: "8px solid #22c55e", backgroundColor: "#d3f8e1", color: '#22c55e' }},
+                    error: {style: { border: "1px solid #ef4444", borderLeft: "8px solid #ef4444", backgroundColor: "#fde8e8", color: '#ef4444' }},
+                    loading : {style: { border: "1px solid #2c323a", borderLeft: "8px solid #2c323a", backgroundColor: "#e2e5e9", color: '#2c323a' }}
                 }}
             />
 

@@ -210,7 +210,7 @@ export default function ExpenseVault() {
                             if(!item.isRemoved){
                                 return(
                                     <div key={ind} className={trackerIndex === ind ? 'label-item-selected' : 'label-item'}>
-                                        <div onClick={()=> setTrackerIndex(ind)} style={{display: "grid", alignItems: 'center'}}>
+                                        <div title={item.trackerName} onClick={()=> setTrackerIndex(ind)} style={{display: "grid", alignItems: 'center'}}>
                                             <Text fontSize='16px' color='#aaaaaa' fontWeight={600}>{item.trackerName}</Text>
                                             <Text fontSize='16px' color='#aaaaaa'>{item.trackingAmount}</Text>
                                         </div>
@@ -228,7 +228,7 @@ export default function ExpenseVault() {
                             if(item.isRemoved){
                                 return(
                                     <div key={ind} className='label-item'>
-                                        <div style={{display: "grid", alignItems: 'center'}}>
+                                        <div title={item.trackerName} style={{display: "grid", alignItems: 'center'}}>
                                             <Text fontSize='18px' color='#aaaaaa'>{item.trackerName}</Text>
                                             <Text fontSize='17px' color='#aaaaaa' fontWeight={500}>{item.trackingAmount}</Text>
                                         </div>
@@ -273,7 +273,7 @@ export default function ExpenseVault() {
             {/* Tracker Popups */}
             {showAddTrackerPopup && <AddTrackerPopup setShowPopup={setShowAddTrackerPopup}/>}
             {showRemoveTrackerPopup && <ConfirmationPopup title='Remove Tracker' confirmButtonName='Remove' confirmMsg="Please note that the expenses under this tracker (if any) will NOT be deleted and the tracker can be recovered." setShowPopup={setShowRemoveTrackerPopup} confirmAction={removeOrRecoverTracker} actionParams1={trackerIndexToUse} actionParams2={true} isLoading={isLoading}/>}
-            {showRecoverTrackerPopup && <ConfirmationPopup title='Recover Tracker' confirmButtonName='Recover' confirmMsg="If you have undeleted expenses under this tracker, they will become accessible again if you recover this tracker." setShowPopup={setShowRecoverTrackerPopup} confirmAction={removeOrRecoverTracker} actionParams1={trackerIndexToUse} actionParams2={false} isLoading={isLoading} actionColor='green'/>}
+            {showRecoverTrackerPopup && <ConfirmationPopup title='Recover Tracker' confirmButtonName='Recover' confirmMsg="If you have undeleted expenses under this tracker, they will become accessible again if you recover this tracker." setShowPopup={setShowRecoverTrackerPopup} confirmAction={removeOrRecoverTracker} actionParams1={trackerIndexToUse} actionParams2={false} isLoading={isLoading} actionColor='blue'/>}
 
             {/* Expense Popups */}
             {showAddExpensePopup && <AddExpensePopup setShowPopup={setShowAddExpensePopup} setRefresh={setRefresh} refresh={refresh} trackerIndex={trackerIndex}/>}

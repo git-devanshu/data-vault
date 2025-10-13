@@ -2,9 +2,14 @@ import { Button, Heading, Text} from '@chakra-ui/react';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { getAuthToken, getBaseURL, primaryAPIVersion } from '../utils/helperFunctions';
+import { getAuthToken, decodeToken } from '../utils/helperFunctions';
+import { sendIssueReportEmail } from '../utils/sendEmails';
 
 const ReportIssueForm = () => {
+    const year = new Date().getFullYear();
+    const name = decodeToken(getAuthToken()).name;
+    const email = decodeToken(getAuthToken()).email;
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -17,23 +22,18 @@ const ReportIssueForm = () => {
             return;
         }
 
-        const token = getAuthToken();
         const toastId = toast.loading("reporting issue...");
         setIsLoading(true);
 
-        axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/issue`, {title, description}, {headers : {
-            Authorization : `Bearer ${token}`
-        }})
-        .then(res =>{
-            if(res.status === 200){
-                toast.success(res.data.message, {id : toastId});
-                setTitle('');
-                setDescription('');
-            }
+        sendIssueReportEmail(email, name, title, description)
+        .then(() =>{
+            toast.success('issue report sent successfully', {id : toastId});
+            setTitle('');
+            setDescription('');
             setIsLoading(false);
         })
         .catch(err =>{
-            toast.error(err.response?.data?.message || "an error occurred", {id : toastId});
+            toast.error(err.message || "an error occurred", {id : toastId});
             console.log(err);
             setIsLoading(false);
         });
@@ -53,10 +53,13 @@ const ReportIssueForm = () => {
 
                 <Button disabled={isLoading} type='submit' colorScheme='blue' width="full" onClick={submitReview}>Send Report</Button>
             </form>
-            <Text mt={5} color='gray.300'>You will receive the response for this issue on your registered email id within 5 days.</Text>
+            <Text mt={5} color='gray.300'>You will receive the response for this issue on your registered email id within 3 days.</Text>
+
+            <footer style={{ fontSize: "14px", textAlign: "center", color: "#666", marginTop: '20px' }}>
+                ©{year} DataVault.
+            </footer>
         </div>
     );
 };
 
 export default ReportIssueForm;
-  

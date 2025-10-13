@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import './authStyle.css';
 import { toast } from 'react-hot-toast';
 import { getBaseURL, primaryAPIVersion } from '../utils/helperFunctions';
-import { Button, Text, PinInput, PinInputField, HStack } from '@chakra-ui/react';
+import { Button, Text, PinInput, PinInputField, HStack, IconButton, Heading } from '@chakra-ui/react';
+import { FaPaste } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createHash, decryptMasterKey, encryptMasterKey } from '../utils/cipherFunctions';
 import axios from 'axios';
@@ -12,7 +13,7 @@ export default function ResetPassword() {
     const location = useLocation();
 
     const [email, setEmail] = useState("");
-    const [vfcode, setVfcode] = useState("");
+    const [passKey, setPassKey] = useState("");
     const [securityPin, setSecurityPin] = useState("");
     const [password, setPassword] = useState("");
 
@@ -22,8 +23,9 @@ export default function ResetPassword() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [showVerificationField, setShowVerificationField] = useState(false); //to show pin input
-    const [showResetField, setShowResetField] = useState(false); //to show new password field
+    const [showVerificationField, setShowVerificationField] = useState(false); // to show pin input
+    const [showResetField, setShowResetField] = useState(false); // to show new password field
+    const [showNotePopup, setShowNotePopup] = useState(false); // to show the  notice popup
 
     const getQueryParams = (query) =>{
         return query.substring(1).split('&')
@@ -37,12 +39,12 @@ export default function ResetPassword() {
     // for managing the reset password flow using url parameters
     useEffect(()=>{
         const queryParams = getQueryParams(location.search);
-        if(queryParams.code === "true"){
+        if(queryParams.key === "true"){
             setShowVerificationField(true);
             setEmail(queryParams.email);
         }
         else if(queryParams.new_password === "true"){
-            setVfcode("");
+            setPassKey("");
             setShowVerificationField(true);
             setShowResetField(true);
             setEmail(queryParams.email);
@@ -52,7 +54,7 @@ export default function ResetPassword() {
         }
     }, [navigate, location]);
 
-    const getVfCode = (e) =>{
+    const verifyEmail = (e) =>{
         e.preventDefault();
         if(!e.target.form.reportValidity()){
             return;
@@ -62,15 +64,15 @@ export default function ResetPassword() {
             return;
         }
 
-        const toastId = toast.loading('verifying user...');
+        const toastId = toast.loading('verifying email...');
         setIsLoading(true);
 
-        axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/send-vfcode`, {email})
+        axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/check-email-exists`, {email})
         .then(res =>{
             if(res.status === 200){
                 toast.success(res.data?.message, {id : toastId});
                 setTimeout(()=>{
-                    navigate(`/reset-password?code=true&email=${email}`, {replace: true});
+                    navigate(`/reset-password?key=${res.data?.isAvailable}&email=${email}`, {replace: true});
                 }, 300);
             }
             setIsLoading(false);
@@ -82,20 +84,20 @@ export default function ResetPassword() {
         });
     }
 
-    const verifyVfCode = (e) =>{
+    const verifyPassKey = (e) =>{
         e.preventDefault();
         if(!e.target.form.reportValidity()){
             return;
         }
-        if(!vfcode || vfcode.length !== 6){
-            toast.error("enter verification code");
+        if(!passKey?.length){
+            toast.error("enter recovery key properly");
             return;
         }
 
-        const toastId = toast.loading('verifying code...');
+        const toastId = toast.loading('verifying recovery key...');
         setIsLoading(true);
 
-        axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/verify-vfcode`, {email, vfcode})
+        axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/verify-passkey`, {email, passKey})
         .then(res =>{
             if(res.status === 200){
                 toast.success(res.data?.message, {id : toastId});
@@ -139,9 +141,7 @@ export default function ResetPassword() {
                 setPinEncryptedKey("");
                 setPinNonce("");
                 setPinNonce("");
-                setTimeout(()=>{
-                    navigate(`/login`, {replace: true});
-                }, 300);
+                setShowNotePopup(true);
             }
             setIsLoading(false);
         }
@@ -151,6 +151,22 @@ export default function ResetPassword() {
             setIsLoading(false);
         }
     }
+
+    const navigateToLogin = () =>{
+        navigate('/login', {replace: true});
+    }
+
+    const pasteFromClipboard = async() => {
+        try{
+            const text = await navigator.clipboard.readText();
+            setPassKey(text);
+        }
+        catch(err){
+            console.error("failed to read clipboard contents: ", err);
+            toast.error('failed to paste the text');
+        }
+    };
+    
 
     return (
         <div className="login-container">
@@ -163,26 +179,21 @@ export default function ResetPassword() {
                         <label className="login-label">Enter your email</label>
                         <input type="email" name='email' value={email} onChange={(e)=> setEmail(e.target.value)} required className="login-input" />
 
-                        <Button onClick={getVfCode} disabled={isLoading} type="submit" colorScheme="blue">
-                            Get Verification Code
+                        <Button onClick={verifyEmail} disabled={isLoading} type="submit" colorScheme="blue">
+                            Verify Email
                         </Button>
                     </form>
                 ) : !showResetField ? (
                     <form className="login-form">
-                        <h2 style={{fontSize: '16px', fontWeight: 300, textAlign: 'center', marginTop: '0', marginBottom: '10px'}}>Enter the 6-digit <span style={{color: "orange"}}>verification code</span> sent on your registered email id.</h2>
-                        <HStack justifyContent='center'>
-                            <PinInput type="number" value={vfcode} onChange={(value) => setVfcode(value)}>
-                                <PinInputField />
-                                <PinInputField />
-                                <PinInputField />
-                                <PinInputField />
-                                <PinInputField />
-                                <PinInputField />
-                            </PinInput>
-                        </HStack>
+                        <h2 style={{fontSize: '16px', fontWeight: 300, textAlign: 'center', marginTop: '0', marginBottom: '10px'}}>Enter your latest <span style={{color: "orange"}}>recovery key</span> correctly in the field below.</h2>
 
-                        <Button onClick={verifyVfCode} disabled={isLoading} type="submit" colorScheme="blue" mt={4}>
-                            Verify
+                        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px'}}>
+                            <input type="text" name='passKey' value={passKey} onChange={(e)=> setPassKey(e.target.value)} required minLength={64} maxLength={64} className="login-input" style={{width: '100%', margin: '0'}} />
+                            <IconButton onClick={pasteFromClipboard} title='paste' width='fit-content' fontSize='20px' icon={<FaPaste />} backgroundColor='transparent' color='gray' _hover={{backgroundColor: 'transparent', color: 'white'}}/>
+                        </div>
+
+                        <Button onClick={verifyPassKey} disabled={isLoading} type="submit" colorScheme="blue" mt={4}>
+                            Verify Recovery Key
                         </Button>
                     </form>
                 ) : (
@@ -210,6 +221,17 @@ export default function ResetPassword() {
 
                 <Text mt={4} textAlign='center'>Hitting back will exit from this process.</Text>
             </div>
+
+            {showNotePopup && <div className='popup-container'>
+                <Heading color='red.400' textAlign='center' size='md' mb={4}>IMPORTANT !</Heading>
+
+                <Text color='gray.300' textAlign='center'>
+                    For better security of your account, it is advised to generate new recovery key after password reset.
+                    You can generate new recovery key from settings of your account.
+                </Text>
+
+                <Button width='full' onClick={navigateToLogin} colorScheme='blue' mt={5}>Okay</Button>
+            </div>}
         </div>
     );
 }

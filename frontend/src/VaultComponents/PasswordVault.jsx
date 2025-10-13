@@ -184,7 +184,7 @@ export default function PasswordVault() {
                             if(!item.startsWith("*d*")){
                                 return(
                                     <div key={ind} className={labelIndex === ind ? 'label-item-selected' : 'label-item'}>
-                                        <div onClick={()=> setLabelIndex(ind)} style={{display: "grid", alignItems: 'center'}}>
+                                        <div onClick={()=> setLabelIndex(ind)} title={item} style={{display: "grid", alignItems: 'center'}}>
                                             <Text fontSize='18px' color='#aaaaaa'>{item}</Text>
                                         </div>
                                         {ind !== 0 && <IconButton title='remove' onClick={()=> { setShowRemoveLabelPopup(true); setLableIndexToUse(ind); }} variant='outline' colorScheme='red' _hover={{bgColor: 'transparent'}} h='34px' icon={<DeleteIcon />} />}
@@ -201,7 +201,7 @@ export default function PasswordVault() {
                             if(item.startsWith("*d*")){
                                 return(
                                     <div key={ind} className='label-item' style={{cursor: 'default'}}>
-                                        <div style={{display: "grid", alignItems: 'center'}}>
+                                        <div title={item} style={{display: "grid", alignItems: 'center'}}>
                                             <Text fontSize='18px' color='#aaaaaa'>{item.slice(3)}</Text>
                                         </div>
                                         {<IconButton title='recover' onClick={()=> { setShowRecoverLabelPopup(true); setLableIndexToUse(ind); }} variant='outline' colorScheme='green' _hover={{bgColor: 'transparent'}} h='34px' icon={<RepeatIcon />} />}
@@ -259,7 +259,7 @@ export default function PasswordVault() {
             {/* Label Popups */}
             {showAddLabelPopup && <AddLabelPopup setShowPopup={setShowAddLabelPopup}/>}
             {showRemoveLabelPopup && <ConfirmationPopup title='Delete Label' confirmButtonName='Remove' confirmMsg="Please note that passwords under this label (if any) will NOT be deleted and the label can be recovered." setShowPopup={setShowRemoveLabelPopup} confirmAction={removeOrRecoverLabel} actionParams1={labelIndexToUse} actionParams2={true} isLoading={isLoading}/>}
-            {showRecoverLabelPopup && <ConfirmationPopup title='Recover Label' confirmButtonName='Recover' confirmMsg="If you have undeleted passwords under this label, they will become accessible again if you recover this label." setShowPopup={setShowRecoverLabelPopup} confirmAction={removeOrRecoverLabel} actionParams1={labelIndexToUse} actionParams2={false} isLoading={isLoading} actionColor='green'/>}
+            {showRecoverLabelPopup && <ConfirmationPopup title='Recover Label' confirmButtonName='Recover' confirmMsg="If you have undeleted passwords under this label, they will become accessible again if you recover this label." setShowPopup={setShowRecoverLabelPopup} confirmAction={removeOrRecoverLabel} actionParams1={labelIndexToUse} actionParams2={false} isLoading={isLoading} actionColor='blue'/>}
 
             {/* Password Popups */}
             {showAddPasswordPopup && <AddPasswordPopup refresh={refresh} setRefresh={setRefresh} setShowPopup={setShowAddPasswordPopup}/>}

@@ -48,9 +48,25 @@ export function removeAuthToken() {
     localStorage.removeItem('token');
 }
 
-export function generateNoteId(){
+export function generateNoteId() {
     return crypto.randomUUID();
 }
+
+
+// function that donwloads the passKey as txt file
+export function downloadPassKeyFile(passKey) {
+    const blob = new Blob([passKey], { type: "text/plain" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "passkey.txt";
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
 
 //function to get the current date in different formats
 /*

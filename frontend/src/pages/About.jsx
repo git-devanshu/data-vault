@@ -7,8 +7,6 @@ import { List, ListItem, Text, ListIcon, Heading, VStack, Avatar, HStack, IconBu
 import ReportIssueForm from "../CommonComponents/ReportIssueForm";
 
 const About = () => {
-    const year = new Date().getFullYear();
-
     return(
         <div className='parent-container'>
             <div className='top-header'>
@@ -97,10 +95,6 @@ const About = () => {
                             </Link>
                         </HStack>
                     </VStack>
-
-                    <footer style={{ fontSize: "14px", textAlign: "center", color: "#666", marginTop: '20px' }}>
-                       ©{year} DataVault.
-                    </footer>
                 </div>
 
                 <div style={{padding: '0 20px 20px 20px'}}>

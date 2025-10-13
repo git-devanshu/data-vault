@@ -1,7 +1,6 @@
 const { Users } = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { sendSignupMail, sendVFCodeMail, sendIssueReportEmail } = require('../utils/sendEmail');
 const { generateVerificationCode } = require('../utils/helperFunctions');
 const { Preferences } = require('../models/preferencesModel');
 
@@ -33,9 +32,9 @@ const checkEmailAvailability = async(req, res) =>{
 // POST - /api/auth/v1/register
 const registerUser = async(req, res) =>{
     try{
-        const { email, name, password, securityPin, passwordEncryptedKey, pinEncryptedKey, passwordSalt, pinSalt, passwordNonce, pinNonce, labelList, labelNonce, trackerList, trackerNonce, notesList, notesNonce } = req.body;
+        const { email, name, password, securityPin, passwordEncryptedKey, pinEncryptedKey, passwordSalt, pinSalt, passwordNonce, pinNonce, labelList, labelNonce, trackerList, trackerNonce, notesList, notesNonce, passKey } = req.body;
 
-        if(!email?.length || !name?.length || !password?.length || !securityPin?.length || !passwordEncryptedKey?.length || !pinEncryptedKey?.length || !passwordSalt?.length || !pinSalt?.length || !passwordNonce?.length || !pinNonce?.length || !labelList?.length || !labelNonce?.length || !trackerList?.length || !trackerNonce?.length || !notesList?.length || !notesNonce?.length){
+        if(!email?.length || !name?.length || !password?.length || !securityPin?.length || !passwordEncryptedKey?.length || !pinEncryptedKey?.length || !passwordSalt?.length || !pinSalt?.length || !passwordNonce?.length || !pinNonce?.length || !labelList?.length || !labelNonce?.length || !trackerList?.length || !trackerNonce?.length || !notesList?.length || !notesNonce?.length || !passKey?.length){
             return res.status(400).json({ message : "all fields required" });
         }
 
@@ -49,6 +48,7 @@ const registerUser = async(req, res) =>{
             name, 
             password, 
             securityPin, 
+            passKey,
             passwordEncryptedKey, 
             pinEncryptedKey, 
             passwordSalt, 
@@ -67,8 +67,6 @@ const registerUser = async(req, res) =>{
             notesNonce
         });
         await newPreference.save();
-
-        sendSignupMail(email, name);
         
         res.status(201).json({ message : "user registered successfully" });
     }
@@ -204,10 +202,11 @@ const fetchUserSettings = async(req, res) =>{
     }
 }
 
-// POST - /api/auth/v1/send-vfcode
-const sendVfCode = async(req, res) =>{
+
+// POST - /api/auth/v1/check-email-exists
+const checkEmailExists = async(req, res) =>{
     try{
-        const { email } = req.body;
+        const {email} = req.body;
         if(!email?.length){
             return res.status(400).json({ message : "email is required" });
         }
@@ -217,12 +216,7 @@ const sendVfCode = async(req, res) =>{
             return res.status(404).json({ message : "user not found" });
         }
 
-        const vfcode = generateVerificationCode(6);
-        existingUser.vfcode = vfcode;
-        await existingUser.save();
-
-        sendVFCodeMail(email, vfcode);
-        res.status(200).json({ message : "verification code sent on email" });
+        res.status(200).json({ message : "email found", isAvailable : true });
     }
     catch(error){
         console.log('Server error', error);
@@ -230,11 +224,12 @@ const sendVfCode = async(req, res) =>{
     }
 }
 
-// POST - /api/auth/v1/verify-vfcode
-const verifyVfCode = async(req, res) =>{
+
+// POST - /api/auth/v1/verify-passkey
+const verifyPassKey = async(req, res) =>{
     try{
-        const { email, vfcode } = req.body;
-        if(!email?.length || !vfcode?.length){
+        const { email, passKey } = req.body;
+        if(!email?.length || !passKey?.length){
             return res.status(400).json({ message : "all fields are required" });
         }
 
@@ -243,7 +238,9 @@ const verifyVfCode = async(req, res) =>{
             return res.status(404).json({ message : "user not found" });
         }
 
-        if(vfcode !== existingUser.vfcode && existingUser.vfcode !== "0"){
+        const isMatch = await bcrypt.compareSync(passKey, existingUser.passKey);
+
+        if(!isMatch || existingUser.passKey === "0" || passKey === "0"){
             return res.status(400).json({ message : "verification failed!" });
         }
 
@@ -267,7 +264,7 @@ const resetPassword = async(req, res) =>{
             return res.status(400).json({ message : "all fields are required" });
         }
 
-        const existingUser = await Users.findOneAndUpdate({email}, {password, passwordEncryptedKey, passwordSalt, passwordNonce, vfcode: "0"});
+        const existingUser = await Users.findOneAndUpdate({email}, {password, passwordEncryptedKey, passwordSalt, passwordNonce});
         if(!existingUser){
             return res.status(404).json({ message : "user not found" });
         }
@@ -333,16 +330,20 @@ const resetSecurityPin = async(req, res) =>{
 }
 
 
-// POST - /api/auth/v1/issue
-const reportIssue = async(req, res) =>{
+// POST - /api/auth/v1/new-passkey
+const newRecoveryKey = async(req, res) =>{
     try{
-        const { title, description } = req.body;
-        if(!title?.length || !description?.length){
-            return res.status(400).json({ message : "all fields are required" });
+        const { passKey } = req.body;
+        if(!passKey?.length){
+            return res.status(400).json({ message : "recovery key is missing" });
         }
 
-        sendIssueReportEmail(req.email, req.name, title, description);
-        res.status(200).json({ message : "issue has be reported" });
+        const updatedUser = await Users.findByIdAndUpdate(req.id, {passKey, $inc: { newPassKeyGenerated: 1 }});
+        if(!updatedUser){
+            return res.status(404).json({ message : "user not found" });
+        }
+
+        res.status(200).json({ message : "new recovery key saved successfully" });
     }
     catch(error){
         console.log('Server error', error);
@@ -358,10 +359,10 @@ module.exports = {
     verifyPin,
     fetchUserSettings,
     saveSettings,
-    sendVfCode,
-    verifyVfCode,
+    checkEmailExists,
+    verifyPassKey,
     resetPassword,
     verifyUser,
     resetSecurityPin,
-    reportIssue,
+    newRecoveryKey
 }

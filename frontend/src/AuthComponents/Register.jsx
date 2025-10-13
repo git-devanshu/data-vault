@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import "./authStyle.css";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import { HStack, PinInput, PinInputField, Button } from "@chakra-ui/react";
 import { toast } from 'react-hot-toast';
 import { getBaseURL, primaryAPIVersion } from '../utils/helperFunctions';
-import { encryptMasterKey, createHash, createMasterKey, encryptData } from '../utils/cipherFunctions';
+import { encryptMasterKey, createHash, createMasterKey, encryptData, createPassKey } from '../utils/cipherFunctions';
+import RegisterSuccessPopup from "./RegisterSuccessPopup";
 
 export default function Register() {
-    const navigate = useNavigate();
-
     const [user, setUser] = useState({
         email : '',
         name : '',
@@ -17,8 +15,12 @@ export default function Register() {
         securityPin : '',
     });
 
+    const [passKey, setPassKey] = useState('');
+
     const [isEmailAvailable, setIsUserAvailable] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
@@ -34,7 +36,7 @@ export default function Register() {
             return;
         }
         setIsLoading(true);
-        const toastId = toast.loading('Checking email availability...');
+        const toastId = toast.loading('checking email availability...');
 
         axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/check-email`, {email: user.email})
         .then(res =>{
@@ -57,7 +59,7 @@ export default function Register() {
             return;
         }
         setIsLoading(true);
-        const toastId = toast.loading('Creating new user...');
+        const toastId = toast.loading('creating new user...');
 
         try{
             const hashedPassword = createHash(user.password);
@@ -66,6 +68,9 @@ export default function Register() {
             const masterKey = createMasterKey();
             const { encryptedMasterKey: passwordEncryptedKey, salt: passwordSalt, nonce: passwordNonce } = await encryptMasterKey(masterKey, user.password);
             const { encryptedMasterKey: pinEncryptedKey, salt: pinSalt, nonce: pinNonce } = await encryptMasterKey(masterKey, user.securityPin);
+
+            const passKey = createPassKey();
+            const hashedPassKey = createHash(passKey);
 
             const initialLabels = ["Other"];
             const { encryptedData: labelList, nonce: labelNonce } = await encryptData(JSON.stringify(initialLabels), masterKey);
@@ -85,6 +90,7 @@ export default function Register() {
                 name: user.name,
                 password: hashedPassword,
                 securityPin: hashedPin,
+                passKey: hashedPassKey,
                 passwordEncryptedKey,
                 pinEncryptedKey,
                 passwordSalt,
@@ -102,9 +108,8 @@ export default function Register() {
             const res = await axios.post(getBaseURL() + `/api/auth/${primaryAPIVersion()}/register`, apiData);
             if(res.status === 201){
                 toast.success(res.data.message, {id : toastId});
-                setTimeout(() =>{
-                    navigate('/login');
-                }, 1500);
+                setPassKey(passKey);
+                setShowSuccessPopup(true);
                 setIsLoading(false);
             }            
         }
@@ -169,6 +174,9 @@ export default function Register() {
                     Already registered? <a href="/login" className="signup-link">Login</a>
                 </p>
             </div>
+
+            {/* Registration successful popup */}
+            {showSuccessPopup && <RegisterSuccessPopup passKey={passKey}/>}
         </div>
     );
 }

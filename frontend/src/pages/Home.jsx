@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './homeStyle.css';
 import { HiOutlineLockClosed } from 'react-icons/hi';
 import { Avatar, Heading, Text, Menu, MenuButton, MenuList, Button, Stack, Divider, MenuItem, MenuDivider } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, InfoIcon, SettingsIcon } from '@chakra-ui/icons';
+import { FaSignOutAlt } from "react-icons/fa";
 import { decodeToken, getAuthToken, removeAuthToken } from '../utils/helperFunctions';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationPopup from '../CommonComponents/ConfirmationPopup';
@@ -13,14 +14,15 @@ export default function Home() {
     const name = decodeToken(getAuthToken()).name;
     const role = decodeToken(getAuthToken()).role;
 
-    const { clearMasterKey, setLabels } = useAppContext();
+    const { clearMasterKey, setLabels, setTrackers, setNotes } = useAppContext();
 
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
     useEffect(()=>{
         clearMasterKey();
         setLabels([]);
-        // add more things ahead
+        setTrackers([]);
+        setNotes([]);
     }, []);
 
     const navigateToVault = (vaultName) =>{
@@ -56,12 +58,13 @@ export default function Home() {
                     <MenuButton title='profile'>
                         <Avatar size="sm" name={name} />
                     </MenuButton>
-                    <MenuList flexDir='column' bg="#1b2232"ccolor='white' minWidth='max-content' borderColor='#222b3e' width='50px'>
-                        <Text mx={3} my={1} color='#2daaff'>{name}</Text>
-                        <Divider mt={2} colorScheme='white.200' />
-                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={navigateToSettings}>Settings</MenuItem>
-                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={navigateToAbout}>About</MenuItem>
-                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={()=> setShowLogoutPopup(true)}>Logout</MenuItem>
+                    <MenuList flexDir='column' bg="#1b2232"ccolor='white' minWidth='160px' borderColor='#222b3e' width='50px' alignItems='center'>
+                        <Text mx={3} my={1} textAlign='center' color='#2daaff'>{name}</Text>
+                        <Divider mt={2} />
+                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={navigateToSettings} icon={<SettingsIcon/>}>Settings</MenuItem>
+                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={navigateToAbout} icon={<InfoIcon/>}>About</MenuItem>
+                        <Divider />
+                        <MenuItem bg="#1b2232" _hover={{backgroundColor: "#222b3e"}} onClick={()=> setShowLogoutPopup(true)} icon={<FaSignOutAlt/>}>Logout</MenuItem>
                     </MenuList>
                 </Menu>
             </div>

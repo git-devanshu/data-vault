@@ -18,6 +18,15 @@ export function createMasterKey() {
 }
 
 
+// generate random secret key for user of 64 bytes = 512 bits
+// @returns : passKey - string
+export function createPassKey() {
+    const passKey = new Uint8Array(64);
+    crypto.getRandomValues(passKey);
+    return arrayToBase64(passKey);
+}
+
+
 // helper functions for conversion unit8Array <---> base64 string
 function arrayToBase64(array) {
     return btoa(String.fromCharCode(...array));
