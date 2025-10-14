@@ -8,14 +8,15 @@ import { primaryAPIVersion, getAuthToken, getBaseURL } from '../utils/helperFunc
 import { decryptData, encryptData } from '../utils/cipherFunctions';
 import { passwordVaultHelpText } from '../utils/helpTextForModules';
 import toast from 'react-hot-toast';
-import { Badge, Button, ButtonGroup, Heading, IconButton, Text, Input, InputLeftElement, InputGroup, InputRightElement } from '@chakra-ui/react';
-import { PlusSquareIcon, DeleteIcon, EditIcon, CopyIcon, AtSignIcon, LockIcon, RepeatIcon, InfoOutlineIcon } from '@chakra-ui/icons';
+import { Button, ButtonGroup, Heading, IconButton, Text } from '@chakra-ui/react';
+import { PlusSquareIcon, DeleteIcon, RepeatIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import AddLabelPopup from '../VaultPopupComponents/AddLabelPopup';
 import AddPasswordPopup from '../VaultPopupComponents/AddPasswordPopup';
 import ConfirmationPopup from '../CommonComponents/ConfirmationPopup';
 import HelpPopup from '../CommonComponents/HelpPopup';
 import UpdatePasswordPopup from '../VaultPopupComponents/UpdatePasswordPopup';
+import PasswordCard from '../VaultPopupComponents/PasswordCard';
 
 export default function PasswordVault() {
     const { masterKey, clearMasterKey, labels, setLabels, hideRemovedLabels } = useAppContext();
@@ -76,16 +77,6 @@ export default function PasswordVault() {
             item.platform.toLowerCase().includes(q)
         );
     }, [data, query]);
-
-    const copyUsername = () =>{
-        navigator.clipboard.writeText(data.username);
-        toast.success('Username copied to clipboard');
-    }
-
-    const copyPassword = () =>{
-        navigator.clipboard.writeText(data.password);
-        toast.success('Password copied to clipboard');
-    }
 
     // remove = true --> remove label and remove = false --> recover label
     const removeOrRecoverLabel = async(labelIndexToUse, remove = true) =>{
@@ -220,36 +211,7 @@ export default function PasswordVault() {
                     {filtered?.length > 0 && <div className='password-card-div'>
                         {filtered.map((item, ind)=>{
                             return(
-                                <div className='password-card' key={ind}>
-                                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px'}}>
-                                        <Heading size='md'>{item.platform}</Heading>
-                                        <Badge>{item.label}</Badge>
-                                    </div>
-                                    <div style={{padding: '0 10px 0 10px'}}>
-                                        <InputGroup>
-                                            <InputLeftElement pointerEvents='none'>
-                                                <AtSignIcon color='gray.300' />
-                                            </InputLeftElement>
-                                            <Input type='text' value={item.username} border='none' readonly/>
-                                            <InputRightElement>
-                                                <IconButton title='copy' onClick={copyUsername} icon={<CopyIcon/>} backgroundColor='transparent' color='gray' _hover={{backgroundColor: 'transparent', color: 'white'}}/>
-                                            </InputRightElement>
-                                        </InputGroup>
-                                        <InputGroup>
-                                            <InputLeftElement pointerEvents='none'>
-                                                <LockIcon color='gray.300' />
-                                            </InputLeftElement>
-                                            <Input type='text' value={item.password} border='none' readonly/>
-                                            <InputRightElement>
-                                                <IconButton title='copy' onClick={copyPassword} icon={<CopyIcon/>} backgroundColor='transparent' color='gray' _hover={{backgroundColor: 'transparent', color: 'white'}}/>
-                                            </InputRightElement>
-                                        </InputGroup>
-                                    </div>
-                                    <div style={{display: 'flex', marginTop: '10px', backgroundColor: '#222b3e', padding: '10px', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px'}}>
-                                        <Button width='full' onClick={()=> { setPasswordToBeUpdated(item); setShowUpdatePasswordPopup(true); }} leftIcon={<EditIcon/>}>Edit</Button>
-                                        <Button width='full' onClick={()=>{ setPasswordIdToRemove(item.id); setShowDeletePasswordPopup(true); }} colorScheme='red' ml={3} leftIcon={<DeleteIcon/>}>Delete</Button>
-                                    </div>
-                                </div>
+                                <PasswordCard key={ind} item={item} setPasswordToBeUpdated={setPasswordToBeUpdated} setPasswordIdToRemove={setPasswordIdToRemove} setShowUpdatePasswordPopup={setShowUpdatePasswordPopup} setShowDeletePasswordPopup={setShowDeletePasswordPopup} />
                             )
                         })}
                     </div>}
