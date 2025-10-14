@@ -65,7 +65,7 @@ export default function NotesVault() {
                         return(
                             <WrapItem key={index}>
                                 <Stack className='password-card' style={{width: '160px', minWidth: '160px', borderLeft: `5px solid ${note.categoryColor}`, height: '200px', cursor: 'pointer', zIndex: 1, borderRadius: '10px', padding: '10px'}} onClick={()=> { setNoteToUse(filtered[index]); setShowViewNotesPopup(true); }} _hover={{backgroundColor: '#222b3e'}}>
-                                    <Text fontSize='16px'>{note.title.slice(0, 50)}...</Text>
+                                    <Text fontSize='16px' fontWeight={600}>{note.title.slice(0, 45)}...</Text>
                                     {note.tag && <Badge colorScheme='gray' width='fit-content'>{note.tag}</Badge>}
                                     <Spacer/>
                                     <Stack align='center' direction='row'>

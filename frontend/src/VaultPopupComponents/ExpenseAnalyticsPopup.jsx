@@ -19,7 +19,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopup, trackerName}) {
     const totalSpent = !data?.length ? 0 : data.reduce((sum, item) => sum + parseInt(item.amount, 10), 0);
-    const percentage = Math.min((totalSpent / parseInt(trackingAmount)) * 100, 100);
+    const percentage = Math.min((totalSpent / parseInt(trackingAmount)) * 100, 100).toFixed(2);
     const remaining = trackerName === "Other" ? 0 : trackingAmount - totalSpent; 
 
     const categoryTotals = data.reduce((acc, item) => {
@@ -82,10 +82,10 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
                     <CloseButton title='close' onClick={()=>setShowPopup(false)}/>
                 </Stack>
 
-                <div style={{width: '100px', height: '100px', margin: '0 auto', marginBottom: '40px'}}>
+                <div style={{width: '100px', height: '100px', margin: '0 auto'}}>
                     <Doughnut data={donutData} options={options} />
-                    <Heading textAlign='center' mt={-4}>{totalSpent}</Heading>
                 </div>
+                <Heading textAlign='center' mt={-5} mb={5}>{totalSpent}</Heading>
                 
                 <StatGroup>
                     <Stat>
@@ -98,8 +98,8 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
                     </Stat>
                 </StatGroup>
 
-                <Progress value={percentage} colorScheme='orange' size='sm' mx={3} mt={3} borderRadius='10px'/>
-                <Text fontSize='sm' color='gray.300' textAlign='center' mt={1}>Total Spent {percentage}%</Text>
+                <Progress title={`Spent ${percentage}%`} value={percentage} colorScheme='gray' size='sm' mx={3} mt={3} borderRadius='10px'/>
+                <Text fontSize='sm' color='orange' textAlign='center' mt={1}>Total Spent {percentage}%</Text>
             </div>
             
             <div style={{padding: '10px'}}>

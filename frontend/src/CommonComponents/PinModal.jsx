@@ -80,7 +80,7 @@ export default function PinModal() {
                             <PinInputField />
                             <PinInputField />
                             <PinInputField />
-                            <PinInputField />
+                            <PinInputField onKeyDown={(e) => e.key === "Enter" && checkSecurityPin(e)}/>
                         </PinInput>
                     </HStack>
                 </div>
