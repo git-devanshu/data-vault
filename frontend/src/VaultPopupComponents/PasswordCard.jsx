@@ -44,8 +44,8 @@ export default function PasswordCard({item, setPasswordToBeUpdated, setPasswordI
                 </InputGroup>
             </div>
             <div style={{display: 'flex', marginTop: '10px', backgroundColor: '#222b3e', padding: '10px', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px'}}>
-                <Button width='full' onClick={()=> { setPasswordToBeUpdated(item); setShowUpdatePasswordPopup(true); }} leftIcon={<EditIcon/>}>Edit</Button>
-                <Button width='full' onClick={()=>{ setPasswordIdToRemove(item.id); setShowDeletePasswordPopup(true); }} colorScheme='red' ml={3} leftIcon={<DeleteIcon/>}>Delete</Button>
+                <Button width='full' onClick={()=>{ setPasswordIdToRemove(item.id); setShowDeletePasswordPopup(true); }} colorScheme='red' leftIcon={<DeleteIcon/>}>Delete</Button>
+                <Button width='full' onClick={()=> { setPasswordToBeUpdated(item); setShowUpdatePasswordPopup(true); }} ml={3} leftIcon={<EditIcon/>}>Edit</Button>
             </div>
         </div>
     );

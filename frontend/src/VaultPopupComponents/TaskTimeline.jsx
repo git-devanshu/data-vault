@@ -26,6 +26,8 @@ export default function TaskTimeline(props) {
         clickAction
     } = props;
 
+    const today = new Date().getDate();
+
     // compute month start and end (UTC)
     const { monthStartUtc, monthEndUtc, daysInMonth } = useMemo(() => {
         const year = queryIndex.getFullYear();
@@ -72,7 +74,7 @@ export default function TaskTimeline(props) {
                 <div style={{ flex: '1 0 auto', overflow: 'scroll', scrollbarWidth: 'none', paddingRight: '10px' }}>
                     <div style={{ ...gridStyle, alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                         {Array.from({ length: daysInMonth }).map((_, i) => (
-                            <div key={i} style={{ width: dayWidth, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#9CA3AF' }}>
+                            <div key={i} style={{ backgroundColor: today === i+1 ? '#121826' : 'transparent', width: dayWidth, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#9CA3AF', borderRadius: '6px' }}>
                                 {i + 1}
                             </div>
                         ))}

@@ -176,7 +176,7 @@ export default function PasswordVault() {
                                 return(
                                     <div key={ind} className={labelIndex === ind ? 'label-item-selected' : 'label-item'}>
                                         <div onClick={()=> setLabelIndex(ind)} title={item} style={{display: "grid", alignItems: 'center'}}>
-                                            <Text fontSize='18px' color='#aaaaaa'>{item}</Text>
+                                            <Text fontSize='16px' fontWeight={600} color='#aaaaaa'>{item}</Text>
                                         </div>
                                         {ind !== 0 && <IconButton title='remove' onClick={()=> { setShowRemoveLabelPopup(true); setLableIndexToUse(ind); }} variant='outline' colorScheme='red' _hover={{bgColor: 'transparent'}} h='34px' icon={<DeleteIcon />} />}
                                     </div>
@@ -193,7 +193,7 @@ export default function PasswordVault() {
                                 return(
                                     <div key={ind} className='label-item' style={{cursor: 'default'}}>
                                         <div title={item} style={{display: "grid", alignItems: 'center'}}>
-                                            <Text fontSize='18px' color='#aaaaaa'>{item.slice(3)}</Text>
+                                            <Text fontSize='16px' fontWeight={600} color='#aaaaaa'>{item.slice(3)}</Text>
                                         </div>
                                         {<IconButton title='recover' onClick={()=> { setShowRecoverLabelPopup(true); setLableIndexToUse(ind); }} variant='outline' colorScheme='green' _hover={{bgColor: 'transparent'}} h='34px' icon={<RepeatIcon />} />}
                                     </div>
