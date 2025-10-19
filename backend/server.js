@@ -33,6 +33,10 @@ app.use('/api/expense', expenseRouter);
 app.use('/api/notes', notesRouter);
 app.use('/api/task', taskRouter);
 
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
 
 app.listen(process.env.PORT, ()=>{
     console.log('Server is listening on PORT', process.env.PORT);
