@@ -17,6 +17,8 @@ export default function RegisterSuccessPopup({passKey}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay"></div>
         <div className='parent-container'>
             <div className='popup-container'>
                 <Heading color='red.400' textAlign='center' size='md' mb={4}>IMPORTANT !</Heading>
@@ -31,5 +33,6 @@ export default function RegisterSuccessPopup({passKey}) {
                 <Button width='full' onClick={navigateToLogin} colorScheme='blue' mt={5}>I Understand</Button>
             </div>
         </div>
+        </>
     );
 }

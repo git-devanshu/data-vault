@@ -98,7 +98,9 @@ export default function UpdateTaskPopup({setShowPopup, refresh, setRefresh, data
     }
 
     return (
-        <div className='popup-container'>
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
+        <div className='popup-container' style={{maxHeight: '80%', overflowY: 'scroll', scrollbarWidth: 'none'}}>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Update Task</Text>
                 <Spacer/>
@@ -129,5 +131,6 @@ export default function UpdateTaskPopup({setShowPopup, refresh, setRefresh, data
 
             {showDeleteTaskPopup && <ConfirmationPopup title='Delete Task' confirmButtonName='Delete' confirmMsg="This action cannot be undone, are you sure to delete this task?" setShowPopup={setShowDeleteTaskPopup} confirmAction={deleteTask} actionParams1={id} isLoading={isLoading}/>}
         </div>
+        </>
     );
 }

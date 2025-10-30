@@ -64,6 +64,8 @@ export default function AddExpensePopup({setShowPopup, setRefresh, refresh, trac
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container'>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Add Expense to <span style={{color: 'orange'}}>{trackers[trackerIndex].trackerName}</span></Text>
@@ -98,5 +100,6 @@ export default function AddExpensePopup({setShowPopup, setRefresh, refresh, trac
                 <Button disabled={isLoading} type="submit" onClick={createExpense}>Add Expense</Button>
             </form>
         </div>
+        </>
     );
 }

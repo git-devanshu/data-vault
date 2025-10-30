@@ -58,6 +58,8 @@ export default function AddTaskPopup({setShowPopup, refresh, setRefresh}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container'>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Add New Task</Text>
@@ -77,5 +79,6 @@ export default function AddTaskPopup({setShowPopup, refresh, setRefresh}) {
                 <Button disabled={isLoading} type="submit" onClick={addTask} leftIcon={<PlusSquareIcon/>}>Add Task</Button>
             </form>
         </div>
+        </>
     );
 }

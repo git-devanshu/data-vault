@@ -55,6 +55,8 @@ export default function AddTrackerPopup({setShowPopup}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container'>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Create New Tracker</Text>
@@ -72,5 +74,6 @@ export default function AddTrackerPopup({setShowPopup}) {
                 <Button disabled={isLoading} type="submit" onClick={createTracker} leftIcon={<PlusSquareIcon/>}>Create Tracker</Button>
             </form>
         </div>
+        </>
     );
 }

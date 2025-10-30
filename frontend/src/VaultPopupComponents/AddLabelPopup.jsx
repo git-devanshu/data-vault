@@ -49,6 +49,8 @@ export default function AddLabelPopup({setShowPopup}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container'>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Create New Label</Text>
@@ -63,5 +65,6 @@ export default function AddLabelPopup({setShowPopup}) {
                 <Button disabled={isLoading} type="submit" onClick={createLabel} leftIcon={<PlusSquareIcon/>}>Create Label</Button>
             </form>
         </div>
+        </>
     )
 }

@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-  
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopup, trackerName}) {
@@ -40,13 +40,39 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
     };
     
     const options = {
-        circumference: 200,
-        rotation: 260,
         plugins: {
             legend: { display: false }, // hide labels
             tooltip: { enabled: true }, // show on hover
         },
-        cutout: '75%', // donut thickness
+        cutout: '90%', // donut thickness
+    };
+
+    const innerCirclePlugin = {
+        id: 'innerCircle',
+        afterDraw: (chart) => {
+          const { ctx, chartArea: { width, height } } = chart;
+          const centerX = width / 2 + chart.chartArea.left;
+          const centerY = height / 2 + chart.chartArea.top;
+    
+          // --- Draw filled circle inside donut ---
+          const innerRadius = chart._metasets[0].data[0].innerRadius; 
+          const outerRadius = chart._metasets[0].data[0].outerRadius;
+          const circleRadius = innerRadius - 10; // gap between donut & circle
+    
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
+          ctx.fillStyle = 'orange';
+          ctx.fill();
+          ctx.restore();
+    
+          // --- Draw percentage text ---
+          ctx.font = 'bold 20px sans-serif';
+          ctx.fillStyle = '#111827';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(`${percentage}%`, centerX, centerY);
+        },
     };
 
     const getCategoryIcon = (category) => {
@@ -74,7 +100,9 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
     };
     
     return (
-        <div className='popup-container' style={{padding: '0', height: '90%', top: '5%', overflowY: 'scroll', scrollbarWidth: "none"}} >
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
+        <div className='expense-popup-container' >
             <div style={{padding: '10px', backgroundColor: '#121826', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}}>
                 <Stack direction='row' alignItems='center' mb={5}>
                     <Text fontSize='xl' ml={1}>{trackerName}</Text>
@@ -82,24 +110,33 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
                     <CloseButton title='close' onClick={()=>setShowPopup(false)}/>
                 </Stack>
 
-                <div style={{width: '100px', height: '100px', margin: '0 auto'}}>
-                    <Doughnut data={donutData} options={options} />
+                <div style={{width: '140px', height: '140px', margin: '0 auto'}}>
+                    <Doughnut data={donutData} options={options} plugins={[innerCirclePlugin]} />
                 </div>
-                <Heading textAlign='center' mt={-5} mb={5}>{totalSpent}</Heading>
+                {/* <Heading textAlign='center' mt={5} mb={5}>{totalSpent}</Heading> */}
                 
-                <StatGroup>
-                    <Stat>
+                <StatGroup gap='5px' px={3} mt={5}>
+                    <Stat bgColor='#222b3e' borderTopLeftRadius='10px' pt={2}>
+                        <StatNumber color='orange' fontSize='20px' textAlign='center'>{totalSpent}</StatNumber>
+                        <StatHelpText textAlign='center'>Total Spent</StatHelpText>
+                    </Stat>
+                    <Stat bgColor='#222b3e' borderTopRightRadius='10px' pt={2}>
+                        <StatNumber fontSize='20px' textAlign='center'>{Object.entries(categoryTotals).length}</StatNumber>
+                        <StatHelpText textAlign='center'>Total Categories</StatHelpText>
+                    </Stat>
+                </StatGroup>
+                
+                <StatGroup gap='5px' px={3} mt='5px'>
+                    <Stat bgColor='#222b3e'  borderBottomLeftRadius='10px' pt={2}>
                         <StatNumber color='#22c55e' fontSize='20px' textAlign='center'>{remaining}</StatNumber>
                         <StatHelpText textAlign='center'>Remaining</StatHelpText>
                     </Stat>
-                    <Stat>
+                    <Stat bgColor='#222b3e' borderBottomRightRadius='10px' pt={2}>
                         <StatNumber color='#2daaff' fontSize='20px' textAlign='center'>{trackingAmount}</StatNumber>
                         <StatHelpText textAlign='center'>Total Amount</StatHelpText>
                     </Stat>
                 </StatGroup>
 
-                <Progress title={`Spent ${percentage}%`} value={percentage} colorScheme='gray' size='sm' mx={3} mt={3} borderRadius='10px'/>
-                <Text fontSize='sm' color='orange' textAlign='center' mt={1}>Total Spent {percentage}%</Text>
             </div>
             
             <div style={{padding: '10px'}}>
@@ -118,5 +155,6 @@ export default function ExpenseAnalyticsPopup({data, trackingAmount, setShowPopu
 
             </div>
         </div>
+        </>
     );
 }

@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useAppContext } from "../context/AppContext";
 
 // Time calculations use UTC calendar days to avoid timezone shifting issues.
 
@@ -22,11 +23,14 @@ export default function TaskTimeline(props) {
         queryIndex,
         dayWidth = 36,
         rowHeight = 40,
-        hideCompletedTasks = false,
-        clickAction
+        clickAction,
+        selectedMonth
     } = props;
 
+    const {hideCompletedTasks} = useAppContext();
+
     const today = new Date().getDate();
+    const currentMonth = new Date().getMonth() + 1;
 
     // compute month start and end (UTC)
     const { monthStartUtc, monthEndUtc, daysInMonth } = useMemo(() => {
@@ -74,7 +78,7 @@ export default function TaskTimeline(props) {
                 <div style={{ flex: '1 0 auto', overflow: 'scroll', scrollbarWidth: 'none', paddingRight: '10px' }}>
                     <div style={{ ...gridStyle, alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                         {Array.from({ length: daysInMonth }).map((_, i) => (
-                            <div key={i} style={{ backgroundColor: today === i+1 ? '#121826' : 'transparent', width: dayWidth, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#9CA3AF', borderRadius: '6px' }}>
+                            <div key={i} style={{ backgroundColor: today === i+1 && currentMonth === selectedMonth ? '#121826' : 'transparent', width: dayWidth, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#9CA3AF', borderRadius: '6px' }}>
                                 {i + 1}
                             </div>
                         ))}
@@ -99,7 +103,7 @@ export default function TaskTimeline(props) {
                                         top: Math.max(4, (rowHeight - Math.min(rowHeight * 0.6, 28)) / 2),
                                         width, height: Math.min(rowHeight * 0.6, 28),
                                         background: statusColor(task.status),
-                                        borderRadius: 6, zIndex: 2,
+                                        borderRadius: 6, zIndex: 1,
                                         display: 'flex', alignItems: 'center', padding: '0 8px',
                                         color: '#032', boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
                                         cursor: 'pointer', overflow: 'hidden', whiteSpace: 'nowrap',

@@ -71,6 +71,8 @@ export default function AddPasswordPopup({setShowPopup, refresh, setRefresh}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container'>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Add New Password</Text>
@@ -102,5 +104,6 @@ export default function AddPasswordPopup({setShowPopup, refresh, setRefresh}) {
                 <Button type="submit" disabled={isLoading} onClick={addPassword} leftIcon={<PlusSquareIcon/>}>Add Password</Button>
             </form>
         </div>
+        </>
     )
 }

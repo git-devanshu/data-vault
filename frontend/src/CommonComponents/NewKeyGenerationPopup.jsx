@@ -46,6 +46,8 @@ export default function NewKeyGenerationPopup({setShowPopup}) {
 
     if(isLoading){
         return (
+            <>
+            <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
             <div className='popup-container' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Heading textAlign='center' size='md' mb={4}>Generating New Key</Heading>
                 {!error && <Spinner size='lg' my={10}/>}
@@ -54,11 +56,13 @@ export default function NewKeyGenerationPopup({setShowPopup}) {
                     <Button mt={5} width='full' onClick={()=> setShowPopup(false)}>Back</Button>    
                 </div>}  
             </div>
+            </>
         )
     }
 
     return (
         <div className='parent-container'>
+            <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
             {!showDetails && <div className='popup-container'>
                 <Heading color='red.400' textAlign='center' size='md' mb={4}>New Recovery Key</Heading>
                 <Text textAlign='center' mb={6}>

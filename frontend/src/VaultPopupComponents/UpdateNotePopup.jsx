@@ -153,6 +153,8 @@ export default function UpdateNotePopup({data, setShowPopup}) {
     }
 
     return (
+        <>
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
         <div className='popup-container' style={{height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: "none"}}>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Update Note</Text>
@@ -190,5 +192,6 @@ export default function UpdateNotePopup({data, setShowPopup}) {
             {/* Delete Note Popup */}
             {showDeleteNotePopup && <ConfirmationPopup title='Delete Note' confirmButtonName='Delete' confirmMsg="This action cannot be undone, do you want to delete this note?" setShowPopup={setShowDeleteNotePopup} confirmAction={deleteNote} actionParams1={data.noteId} isLoading={isLoading}/>}
         </div>
+        </>
     );
 }

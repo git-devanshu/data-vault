@@ -105,7 +105,7 @@ export default function TaskVault() {
                 </div>
 
                 <div className='grid-inner-right' style={{overflowX: 'scroll', scrollbarWidth: 'none'}}>
-                    <TaskTimeline tasks={filtered} queryIndex={new Date(queryIndex + '-01')} hideCompletedTasks={hideCompletedTasks} clickAction={taskClickAction}/>
+                    <TaskTimeline tasks={filtered} selectedMonth={parseInt(queryIndex.substring(5, 7))} queryIndex={new Date(queryIndex + '-01')} clickAction={taskClickAction}/>
                 </div>
             </div>
 
