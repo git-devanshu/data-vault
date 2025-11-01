@@ -1,17 +1,17 @@
 import React from "react";
 import '../VaultComponents/vaultStyle.css';
-import { HiOutlineLockClosed } from 'react-icons/hi';
 import { MdCheckCircle } from 'react-icons/md';
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { List, ListItem, Text, ListIcon, Heading, VStack, Avatar, HStack, IconButton, Link } from "@chakra-ui/react";
 import ReportIssueForm from "../CommonComponents/ReportIssueForm";
+import Favicon from '../../public/favicon.svg'
 
 const About = () => {
     return(
         <div className='parent-container'>
             <div className='top-header'>
                 <div>
-                    <HiOutlineLockClosed size={24} color='#2daaff'/>
+                    <img src={Favicon} style={{height: '30px'}}/>
                     <h1>DataVault</h1>
                 </div>
             </div>

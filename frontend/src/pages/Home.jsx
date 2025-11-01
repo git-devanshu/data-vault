@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './homeStyle.css';
-import { HiOutlineLockClosed } from 'react-icons/hi';
-import { Avatar, Heading, Text, Menu, MenuButton, MenuList, Button, Stack, Divider, MenuItem, MenuDivider } from '@chakra-ui/react';
+import { Avatar, Heading, Text, Menu, MenuButton, MenuList, Divider, MenuItem } from '@chakra-ui/react';
 import { ArrowForwardIcon, InfoIcon, SettingsIcon } from '@chakra-ui/icons';
 import { FaSignOutAlt } from "react-icons/fa";
 import { decodeToken, getAuthToken, removeAuthToken } from '../utils/helperFunctions';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationPopup from '../CommonComponents/ConfirmationPopup';
 import { useAppContext } from '../context/AppContext';
+import Favicon from '../../public/favicon.svg'
 
 export default function Home() {
     const navigate = useNavigate();
@@ -51,7 +51,7 @@ export default function Home() {
             {/* header */}
             <div className='top-header'>
                 <div>
-                    <HiOutlineLockClosed size={24} color='#2daaff'/>
+                    <img src={Favicon} style={{height: '30px'}}/>
                     <h1>DataVault</h1>
                 </div>
                 <Menu>
@@ -74,7 +74,7 @@ export default function Home() {
                 <div>
                     <h1>A Secure Place for your Personal Data</h1>
                 </div>
-                <HiOutlineLockClosed size='55%' className='side-logo'/>
+                <img src={Favicon} size='55%' className='side-logo'/>
             </div>
 
             {/* modules */}
