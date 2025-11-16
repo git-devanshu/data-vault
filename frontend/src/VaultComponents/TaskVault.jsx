@@ -47,7 +47,8 @@ export default function TaskVault() {
                 for(const val of res.data){
                     const decryptedData = JSON.parse(await decryptData(val.taskData, val.nonce, masterKey));
                     decryptedData.id = val._id;
-                    console.log(decryptedData);
+                    val.linkedExpenseId ? decryptedData.linkedExpenseId = val.linkedExpenseId : null;
+                    val.linkedNoteId ? decryptedData.linkedNoteId = val.linkedNoteId : null;
                     taskList.push(decryptedData);
                 }
                 setData(taskList);

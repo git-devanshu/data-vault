@@ -6,6 +6,8 @@ const taskSchema = new mongoose.Schema({
     nonce : {type : String, required : true},
     queryStart : {type : Date, required : true},
     queryEnd : {type : Date, required : true},
+    linkedNoteId : {type : String}, // noteId (UUID)
+    linkedExpenseId : {type : String}, // _id of expenses
 });
 
 const Tasks = mongoose.model('tasks', taskSchema, 'tasks');

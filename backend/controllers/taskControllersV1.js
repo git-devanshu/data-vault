@@ -1,3 +1,5 @@
+const { Expenses } = require("../models/expenseModel");
+const { Notes } = require("../models/notesModel");
 const { Tasks } = require("../models/taskModel");
 
 
@@ -57,12 +59,12 @@ const addTask = async(req, res) =>{
 // PUT - /api/task/v1
 const updateTask = async(req, res) =>{
     try{
-        const { id, taskData, nonce, queryStart, queryEnd } = req.body;
+        const { id, taskData, nonce, queryStart, queryEnd, linkedExpenseId, linkedNoteId } = req.body;
         if(!taskData?.length || !nonce?.length){
             return res.status(400).json({ message : "an error occurred!" });
         }
 
-        const updatedTask = await Tasks.findByIdAndUpdate(id, {taskData, nonce, queryStart, queryEnd});
+        const updatedTask = await Tasks.findByIdAndUpdate(id, {taskData, nonce, queryStart, queryEnd, linkedExpenseId, linkedNoteId});
         if(!updatedTask){
             return res.status(404).json({ message : "task not found" });
         }
@@ -98,6 +100,26 @@ const deleteTask = async(req, res) =>{
 }
 
 
+// POST - /api/task/v1/links
+const getTaskLinks = async(req, res) =>{
+    try{
+        const {linkedExpenseId} = req.body;
+        var data = {};
+
+        if(linkedExpenseId){
+            const linkedExpense = await Expenses.findById(linkedExpenseId);
+            if(linkedExpense) data.linkedExpense = linkedExpense;
+        }
+
+        return res.status(200).json(data);
+    }
+    catch(error){
+        console.log('Server error', error);
+        res.status(500).json({ message : "something went wrong!" });
+    }
+}
+
+
 // POST - /api/task/v1
 // const  = async(req, res) =>{
 //     try{
@@ -114,5 +136,6 @@ module.exports = {
     fetchCurrentTasks,
     addTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    getTaskLinks,
 }

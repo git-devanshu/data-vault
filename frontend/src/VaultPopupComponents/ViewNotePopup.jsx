@@ -34,7 +34,7 @@ export default function ViewNotePopup({setShowPopup, data}) {
 
     if(!note){
         return(
-            <div className='popup-container' style={{height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: 'none', padding: 0}}>
+            <div className='popup-container' style={{maxHeight: '98%', height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: 'none', padding: 0}}>
                 <Loading data='Note' error={error}/>
                 <Button colorScheme='red' mt={3} onClick={()=> setShowPopup(false)}>Back</Button>
             </div>
@@ -44,7 +44,7 @@ export default function ViewNotePopup({setShowPopup, data}) {
     return (
         <>
         <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
-        <div className='popup-container' style={{height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: 'none', borderTop: `8px solid ${data.categoryColor}`}}>
+        <div className='popup-container' style={{maxHeight: '98%', height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: 'none', borderTop: `8px solid ${data.categoryColor}`}}>
             <Stack direction='row' mb={5} alignItems='center'>
                 <Heading size='md'>{data.title}</Heading>
                 <Spacer/>
