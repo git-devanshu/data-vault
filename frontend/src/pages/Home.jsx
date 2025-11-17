@@ -48,7 +48,7 @@ export default function Home() {
         })
         .catch(error =>{
             console.log(error);
-            setError('Failed to load your data vaults. Please check your internet connection and try again.')
+            setError('Failed to connect to DataVault. Please check your internet connection and try again.')
         })
     }, [reload]);
 
@@ -77,10 +77,10 @@ export default function Home() {
         return(
             <>
             <div className="popup-overlay" style={{backgroundColor: '#121826'}}></div>
-            <div className='popup-container' style={{height: '215px', display: 'flex', flexDirection: 'column', alignItems: 'center', top: 'calc((100vh - 250px)/2)'}}>
-                {!error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Loading Your Vaults</Heading>}
+            <div className='popup-container' style={{height: '215px', width: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', top: 'calc((100vh - 250px)/2)', left: 'calc((100% - 320px)/2)', borderRadius: '12px'}}>
+                {!error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connecting to DataVault</Heading>}
                 {!error && <Spinner color='white' size='lg' my={10}/>}
-                {error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Error Loading Vaults</Heading>}
+                {error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connection Error</Heading>}
                 {error && <div>
                     <Text color='red.500' textAlign='center'>{error}</Text>
                     <Button mt={5} width='full' onClick={()=> setReload(!reload)}>Try Again</Button>    
