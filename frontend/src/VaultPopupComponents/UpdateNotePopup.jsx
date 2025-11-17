@@ -155,7 +155,7 @@ export default function UpdateNotePopup({data, setShowPopup}) {
     return (
         <>
         <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
-        <div className='popup-container' style={{maxHeight: '98%', height: '98%', width: '98%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: "none"}}>
+        <div className='popup-container' style={{ height: '100%', width: '100%', top: '1%', left: '1%', overflowY: 'scroll', scrollbarWidth: "none"}}>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Update Note</Text>
                 <Spacer/>

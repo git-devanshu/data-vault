@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './homeStyle.css';
 import { Avatar, Heading, Text, Menu, MenuButton, MenuList, Divider, MenuItem, Stack, Spacer, Button, ButtonGroup, Badge } from '@chakra-ui/react';
-import { ArrowForwardIcon, InfoIcon, SettingsIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, AtSignIcon, InfoIcon, LockIcon, NotAllowedIcon, SettingsIcon } from '@chakra-ui/icons';
 import { FaSignOutAlt } from "react-icons/fa";
-import { decodeToken, getAuthToken, removeAuthToken } from '../utils/helperFunctions';
+import { decodeToken, getAuthToken, getCurrentDate, removeAuthToken } from '../utils/helperFunctions';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationPopup from '../CommonComponents/ConfirmationPopup';
 import { useAppContext } from '../context/AppContext';
@@ -17,6 +17,9 @@ export default function Home() {
     const navigate = useNavigate();
     const name = decodeToken(getAuthToken()).name;
     const role = decodeToken(getAuthToken()).role;
+
+    const date = new Date();
+    const yyyymm = `${date.getMonth() + 1}/${date.getFullYear()}`;
 
     const { clearMasterKey, setLabels, setTrackers, setNotes } = useAppContext();
 
@@ -75,8 +78,12 @@ export default function Home() {
 
             {/* grid section */}
             <div className='main-section'>
-                <div className='logo-outline'>
-                    <img src={Favicon} className='side-logo'/>
+                <div>
+                    <Heading textAlign='center' mb={4} color='#2daaff15'>The Vault</Heading>
+                    <div className='logo-outline'>
+                        <div className='vault-door-handle'/>
+                        <img src={Favicon} className='side-logo'/>
+                    </div>
                 </div>
 
 
@@ -85,11 +92,12 @@ export default function Home() {
                         <Stack direction='row' p='15px' align='center'>
                             <img src={passwordIcon} style={{height: '40px'}}/>
                             <Spacer/>
-                            <Heading color='blackAlpha.800' fontFamily='body' fontSize={20} fontWeight={700}>Password Vault</Heading>
+                            <Heading color='blackAlpha.800' fontFamily='body' fontSize={22} fontWeight={700}>Password Vault</Heading>
                         </Stack>
                         <Spacer/>
-                        <div style={{height: '40px', width: '100%', backgroundColor: 'orange', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px', paddingLeft: '15px', color: '#232323', fontWeight: 600, display: 'grid', justifyContent: 'left', alignItems: 'center'}}>
-                            <Text color='blackAlpha.800' fontSize={18} fontWeight={600}>Browse Labels <ArrowForwardIcon mt='-5px' h={5} w={5}/></Text>
+                        <div style={{height: '30%', width: '100%', borderTop: '1px solid black', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px', color: '#232323', fontWeight: 600, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '25px'}}>
+                            <Text color='blackAlpha.800' fontSize={14} fontWeight={500}><AtSignIcon mt='-5px' h={4} w={4}/> username</Text>
+                            <Text color='blackAlpha.800' fontSize={14} fontWeight={500}><LockIcon mt='-5px' h={4} w={4}/> password</Text>
                         </div>
                     </Stack>
 
@@ -97,8 +105,8 @@ export default function Home() {
                         <Stack direction='row' p='15px' align='center'>
                             <img src={expenseIcon} style={{height: '35px'}}/>
                         </Stack>
-                        <Text ml='15px' mt={-3} fontSize={20} fontFamily='serif' color='black'>**** **** **** ****</Text>
-                        <Spacer/>
+                        <Text ml='15px' mt={-5} fontSize={20} fontFamily='serif' color='black'>**** **** **** ****</Text>
+                        <Text ml='15px' mt={-5} fontSize={15} color='black'>{yyyymm}</Text>
                         <Stack direction='row' px='15px' align='center' mb={1}>
                             <Heading color='blackAlpha.800' fontFamily='body' fontSize={18} fontWeight={700}>Expense Tracker</Heading>
                             <Spacer/>
@@ -113,8 +121,8 @@ export default function Home() {
                             <img src={taskIcon} style={{height: '30px', filter: 'invert(1)'}}/>
                         </Stack>
                         <Stack>
-                            <div style={{height: 'auto', width: '100px', borderRadius: '7px', backgroundColor: 'orange', color: '#121826', padding: '4px', fontSize: '10px', marginLeft: '10px'}}>Task 1</div>
-                            <div style={{height: 'auto', width: '170px', borderRadius: '7px', backgroundColor: '#22c55e', color: '#121826', padding: '4px', fontSize: '10px', marginLeft: '25px'}}>Task 2</div>
+                            <div style={{height: 'auto', width: '100px', borderRadius: '7px', backgroundColor: 'orange', color: '#121826', padding: '4px', fontSize: '10px', marginLeft: '10px', fontWeight: 600}}>Task 1</div>
+                            <div style={{height: 'auto', width: '170px', borderRadius: '7px', backgroundColor: '#22c55e', color: '#121826', padding: '4px', fontSize: '10px', marginLeft: '25px', fontWeight: 600}}>Task 2</div>
                         </Stack>
                     </Stack>
 
@@ -124,14 +132,26 @@ export default function Home() {
                             <Spacer/>
                             <img src={notebookIcon} style={{height: '30px', filter: 'invert(1)'}}/>
                         </Stack>
-                        <Text color='blackAlpha.700' ml={3} mt={1} fontFamily='body' color='gray' fontSize={15} fontWeight={500}>Store your notes securely at one place.</Text>
+                        <Text ml={3} mt={1} fontFamily='body' color='gray' fontSize={15} fontWeight={500}>Your secure notebook for all your notes.</Text>
                         <Badge ml={3} mt={3}>label</Badge>
                     </div>
 
-                    {role === "admin" && <div onClick={navigateToAdminPage} style={{height:'140px', width:'260px', backgroundColor:'#FFD700', borderRadius:'12px', boxShadow:'0 0 20px 10px #FFD700 inset', padding: '15px'}} className='card-mp'>
-                        <Heading color='blackAlpha.800' mt={4} fontFamily='body' fontSize={20} fontWeight={700}>Block Access <ArrowForwardIcon mt='-5px' h={5} w={5}/></Heading>
-                        <Text color='blackAlpha.700' mr={3} fontFamily='body' fontSize={15} fontWeight={500}>Block access to specific user.</Text>
-                    </div>}
+                    {role === "admin" && 
+                    <Stack direction='row' onClick={navigateToAdminPage} style={{height:'140px', width:'260px', backgroundColor:'#FFD700', borderRadius:'12px'}} className='card-mp'>
+                        <Stack>
+                            <Heading color='blackAlpha.800' ml='15px' mt='15px' fontFamily='body' fontSize={20} fontWeight={700}>Block Access</Heading>
+                            <Text color='blackAlpha.700' ml='15px' fontFamily='body' fontSize={15} fontWeight={500}>Block access to specific user.</Text>
+                            <Spacer/>
+                            <Text color='red' ml='15px' mb='15px' fontFamily='body' fontSize={16} fontWeight={600}><NotAllowedIcon mt={-1}/>Blocked</Text>
+                        </Stack>
+                        <Spacer/>
+                        <Stack align='center' borderLeft='2px solid #121826'>
+                            <Spacer/>
+                            <div style={{borderRadius: '50%', margin: '10px', backgroundColor: '#121212'}}>
+                                <ArrowForwardIcon color='white' stroke='AppWorkspace'm={2} h={7} w={7}/>
+                            </div>
+                        </Stack>
+                    </Stack>}
                 </div>
             </div>
 

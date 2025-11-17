@@ -47,14 +47,32 @@
     min-width: 200px;
     margin: 0 auto;
     border: none;
-    animation: spinCycle 5s ease-in-out forwards, filterPulse 5s ease-in-out forwards;
+}
+
+.vault-door-handle{
+    height: 80px;
+    width: 10px;
+    border-radius: 10px;
+    background-color:#2daaff15;
 }
 
 .logo-outline{
     border: 20px solid #2daaff15;
     border-radius: 40px;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.logo-outline:hover .side-logo {
+    animation: spinCycle 5s ease-in-out forwards, filterPulse 5s ease-in-out forwards;
+}
+  
+.logo-outline:hover .vault-door-handle {
+    animation: filterPulseForDoorHandle 5s ease-in-out forwards;
+}
+  
 
 .module-stack{
     display: grid;
@@ -94,6 +112,21 @@
 
     55.01%, 100% {
         filter: opacity(10%);
+    }
+}
+
+
+@keyframes filterPulseForDoorHandle {
+    0%, 40% {
+        background-color:#2daaff15;
+    }
+
+    40.01%, 55% {
+        background-color:#2daaff;
+    }
+
+    55.01%, 100% {
+        background-color:#2daaff15;
     }
 }
   
