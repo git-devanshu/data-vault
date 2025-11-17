@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './homeStyle.css';
-import { Avatar, Heading, Text, Menu, MenuButton, MenuList, Divider, MenuItem, Stack, Spacer, Button, ButtonGroup, Badge } from '@chakra-ui/react';
+import { Avatar, Heading, Text, Menu, MenuButton, Spinner, MenuList, Divider, MenuItem, Stack, Spacer, Button, Badge } from '@chakra-ui/react';
 import { ArrowForwardIcon, AtSignIcon, InfoIcon, LockIcon, NotAllowedIcon, SettingsIcon } from '@chakra-ui/icons';
 import { FaSignOutAlt } from "react-icons/fa";
-import { decodeToken, getAuthToken, getCurrentDate, removeAuthToken } from '../utils/helperFunctions';
+import { decodeToken, getAuthToken, getBaseURL, removeAuthToken } from '../utils/helperFunctions';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationPopup from '../CommonComponents/ConfirmationPopup';
 import { useAppContext } from '../context/AppContext';
@@ -12,6 +12,7 @@ import passwordIcon from '../../public/password.png'
 import taskIcon from '../../public/tasks.png'
 import expenseIcon from '../../public/expense.png'
 import notebookIcon from '../../public/notebook.png'
+import axios from 'axios';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -25,12 +26,31 @@ export default function Home() {
 
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
-    useEffect(()=>{
+    const [reload, setReload] = useState(false);
+    const [error, setError] = useState(null);
+    const [isCheckingHealth, setIsCheckingHealth] = useState(false);
+
+    useEffect(()=> {
         clearMasterKey();
         setLabels([]);
         setTrackers([]);
         setNotes([]);
     }, []);
+
+    useEffect(()=> {
+        setIsCheckingHealth(true);
+        setError(null);
+        axios.get(getBaseURL() + "/health")
+        .then(res =>{
+            if(res.status === 200){
+                setIsCheckingHealth(false);
+            }
+        })
+        .catch(error =>{
+            console.log(error);
+            setError('Failed to load your data vaults. Please check your internet connection and try again.')
+        })
+    }, [reload]);
 
     const navigateToVault = (vaultName) =>{
         navigate(`/vault/${vaultName}`);
@@ -51,6 +71,23 @@ export default function Home() {
     const logout = () =>{
         removeAuthToken();
         navigate('/login');
+    }
+
+    if(isCheckingHealth){
+        return(
+            <>
+            <div className="popup-overlay" style={{backgroundColor: '#121826'}}></div>
+            <div className='popup-container' style={{height: '215px', display: 'flex', flexDirection: 'column', alignItems: 'center', top: 'calc((100vh - 250px)/2)'}}>
+                {!error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Loading Your Vaults</Heading>}
+                {!error && <Spinner color='white' size='lg' my={10}/>}
+                {error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Error Loading Vaults</Heading>}
+                {error && <div>
+                    <Text color='red.500' textAlign='center'>{error}</Text>
+                    <Button mt={5} width='full' onClick={()=> setReload(!reload)}>Try Again</Button>    
+                </div>}  
+            </div>
+            </>
+        )
     }
 
     return (
