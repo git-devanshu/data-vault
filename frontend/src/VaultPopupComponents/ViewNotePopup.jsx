@@ -44,7 +44,7 @@ export default function ViewNotePopup({setShowPopup, data}) {
     return (
         <>
         <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
-        <div className='popup-container' style={{ height: '100%', width: '100%', top: '0', left: '0', overflowY: 'scroll', scrollbarWidth: 'none', borderTop: `8px solid ${data.categoryColor}`}}>
+        <div className='popup-container' style={{ height: '100vh', width: '100%', top: '0', left: '0', overflowY: 'scroll', scrollbarWidth: 'none', borderTop: `8px solid ${data.categoryColor}`, borderRadius: '0', maxHeight: '100vh'}}>
             <Stack direction='row' mb={5} alignItems='center'>
                 <Heading size='md'>{data.title}</Heading>
                 <Spacer/>

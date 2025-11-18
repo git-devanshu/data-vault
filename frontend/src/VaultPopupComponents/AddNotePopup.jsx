@@ -95,7 +95,7 @@ export default function AddNotePopup({setShowPopup}) {
     return (
         <>
         <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
-        <div className='popup-container' style={{maxHeight: '100%', maxWidth: '100%', top: '0', left: '0', overflowY: 'scroll', scrollbarWidth: "none"}}>
+        <div className='popup-container' style={{height: '100vh', width: '100%', top: '0', left: '0', overflowY: 'scroll', scrollbarWidth: "none", borderRadius: '0', maxHeight: '100vh'}}>
             <Stack direction='row' alignItems='center' mb={5}>
                 <Text fontSize='xl' ml={1}>Add Note</Text>
                 <Spacer/>
