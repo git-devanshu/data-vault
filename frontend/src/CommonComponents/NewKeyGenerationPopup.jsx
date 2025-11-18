@@ -50,7 +50,14 @@ export default function NewKeyGenerationPopup({setShowPopup}) {
             <div className="popup-overlay" onClick={() => setShowPopup(false)}></div>
             <div className='popup-container' style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Heading textAlign='center' size='md' mb={4}>Generating New Key</Heading>
-                {!error && <Spinner size='lg' my={10}/>}
+                {!error && <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='blue.500'
+                        size='lg'
+                        my={10}
+                    />}
                 {error && <div>
                     <Text color='red.300'>{error}</Text>
                     <Button mt={5} width='full' onClick={()=> setShowPopup(false)}>Back</Button>    

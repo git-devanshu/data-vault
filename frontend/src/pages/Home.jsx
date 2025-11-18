@@ -79,7 +79,14 @@ export default function Home() {
             <div className="popup-overlay" style={{backgroundColor: '#121826'}}></div>
             <div className='popup-container' style={{height: '215px', width: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', top: 'calc((100vh - 250px)/2)', left: 'calc((100% - 320px)/2)', borderRadius: '12px'}}>
                 {!error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connecting to DataVault</Heading>}
-                {!error && <Spinner color='white' size='lg' my={10}/>}
+                {!error && <Spinner
+                        thickness='4px'
+                        speed='0.65s'
+                        emptyColor='gray.200'
+                        color='blue.500'
+                        size='xl'
+                        my={10}
+                    />}
                 {error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connection Error</Heading>}
                 {error && <div>
                     <Text color='red.500' textAlign='center'>{error}</Text>
