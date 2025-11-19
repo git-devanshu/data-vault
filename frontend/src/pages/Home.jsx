@@ -30,6 +30,8 @@ export default function Home() {
     const [error, setError] = useState(null);
     const [isCheckingHealth, setIsCheckingHealth] = useState(false);
 
+    const [loadingClassName, setLaodingClassName] = useState('loading');
+
     useEffect(()=> {
         clearMasterKey();
         setLabels([]);
@@ -39,14 +41,17 @@ export default function Home() {
 
     useEffect(()=> {
         setIsCheckingHealth(true);
+        setLaodingClassName('loading');
         setError(null);
         axios.get(getBaseURL() + "/health")
         .then(res =>{
+            setLaodingClassName('success');
             if(res.status === 200){
-                setIsCheckingHealth(false);
+                setTimeout(()=> setIsCheckingHealth(false), 800);
             }
         })
         .catch(error =>{
+            setLaodingClassName('error');
             console.log(error);
             setError('Failed to connect to DataVault. Please check your internet connection and try again.')
         })
@@ -75,25 +80,21 @@ export default function Home() {
 
     if(isCheckingHealth){
         return(
-            <>
-            <div className="popup-overlay" style={{backgroundColor: '#121826'}}></div>
-            <div className='popup-container' style={{height: '215px', width: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', top: 'calc((100vh - 250px)/2)', left: 'calc((100% - 320px)/2)', borderRadius: '12px'}}>
-                {!error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connecting to DataVault</Heading>}
-                {!error && <Spinner
-                        thickness='4px'
-                        speed='0.65s'
-                        emptyColor='gray.200'
-                        color='blue.500'
-                        size='xl'
-                        my={10}
-                    />}
-                {error && <Heading textAlign='center' size='md' mb={4} color='#eee'>Connection Error</Heading>}
-                {error && <div>
-                    <Text color='red.500' textAlign='center'>{error}</Text>
-                    <Button mt={5} width='full' onClick={()=> setReload(!reload)}>Try Again</Button>    
-                </div>}  
+            <div className='parent-container' style={{gap:'0'}}>
+                <div style={{boxShadow: 'none', backgroundColor: '#121826', height: 'auto', width: '300px', position: 'fixed', left: 'calc((100% - 300px)/2)', top: 'calc((100vh - 400px)/2)'}}>
+                    {!error && <Heading textAlign='center' size='lg' mb={4} color='#eee'>Opening Your Vault</Heading>}
+                    {error && <Heading textAlign='center' size='lg' mb={4} color='red.600'>Failed To Open</Heading>}
+                    <div className='logo-outline'>
+                        <div className={`vault-door-handle-${loadingClassName}`}/>
+                        <img src={Favicon} className={`side-logo-${loadingClassName}`}/>
+                    </div>
+                    {!error && <Text textAlign='center' fontSize={17} mt={3} color='gray.500'>We are trying to establish the connection. This may take upto 2 minutes.</Text>}
+                    {error && <div>
+                        <Text color='red.500' textAlign='center' fontSize={17} mt={3}>{error}</Text>
+                        <Button mt={5} width='full' variant='outline' colorScheme='whiteAlpha' onClick={()=> setReload(!reload)}>Try Again</Button>    
+                    </div>} 
+                </div>
             </div>
-            </>
         )
     }
 

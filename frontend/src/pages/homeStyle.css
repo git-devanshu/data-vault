@@ -73,6 +73,72 @@
     animation: filterPulseForDoorHandle 5s ease-in-out forwards;
 }
 
+
+/* For Loading Screen */
+
+.side-logo-loading{
+    filter: opacity(10%);
+    margin: 0;
+    padding: 0;
+    width: 60%;
+    min-width: 180px;
+    margin: 0 auto;
+    border: none;
+    animation: loadingSpin 1.5s linear infinite;
+}
+
+.vault-door-handle-loading{
+    height: 80px;
+    width: 10px;
+    border-radius: 10px;
+    background-color:#2daaff15;
+}
+
+.side-logo-success{
+    margin: 0;
+    padding: 0;
+    width: 60%;
+    min-width: 180px;
+    margin: 0 auto;
+    border: none;
+}
+
+.vault-door-handle-success{
+    height: 80px;
+    width: 10px;
+    border-radius: 10px;
+    background-color:#2daaff;
+}
+
+.side-logo-error{
+    filter: brightness(0) invert(55%);
+    margin: 0;
+    padding: 0;
+    width: 60%;
+    min-width: 180px;
+    margin: 0 auto;
+    border: none;
+}
+
+.vault-door-handle-error{
+    height: 80px;
+    width: 10px;
+    border-radius: 10px;
+    background-color: gray;
+}
+
+@keyframes loadingSpin {
+    0% {
+        transform: rotate(0deg);
+    } 
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+/* --------------------- */
+
+
 .module-stack{
     display: grid;
     grid-template-columns: 1fr 1fr;
