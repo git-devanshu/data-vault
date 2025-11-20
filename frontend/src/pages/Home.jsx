@@ -43,7 +43,7 @@ export default function Home() {
         setIsCheckingHealth(true);
         setLaodingClassName('loading');
         setError(null);
-        axios.get(getBaseURL() + "/health")
+        axios.get(getBaseURL() + "/health", { timeout: 120000 })
         .then(res =>{
             setLaodingClassName('success');
             if(res.status === 200){
@@ -53,7 +53,8 @@ export default function Home() {
         .catch(error =>{
             setLaodingClassName('error');
             console.log(error);
-            setError('Failed to connect to DataVault. Please check your internet connection and try again.')
+            if (error.code === "ECONNABORTED") setError('There was a timeout! The server is taking too long to respond.');
+            else setError('Failed to connect to DataVault. Please check your internet connection and try again.')
         })
     }, [reload]);
 
@@ -82,13 +83,13 @@ export default function Home() {
         return(
             <div className='parent-container' style={{gap:'0'}}>
                 <div style={{boxShadow: 'none', backgroundColor: '#121826', height: 'auto', width: '300px', position: 'fixed', left: 'calc((100% - 300px)/2)', top: 'calc((100vh - 400px)/2)'}}>
-                    {!error && <Heading textAlign='center' size='lg' mb={4} color='#eee'>Opening Your Vault</Heading>}
+                    {!error && <Heading textAlign='center' size='lg' mb={4} color='#eee'>Opening The Vault</Heading>}
                     {error && <Heading textAlign='center' size='lg' mb={4} color='red.600'>Failed To Open</Heading>}
                     <div className='logo-outline'>
                         <div className={`vault-door-handle-${loadingClassName}`}/>
                         <img src={Favicon} className={`side-logo-${loadingClassName}`}/>
                     </div>
-                    {!error && <Text textAlign='center' fontSize={17} mt={3} color='gray.500'>We are trying to establish the connection. This may take upto 2 minutes.</Text>}
+                    {!error && <Text textAlign='center' fontSize={17} mt={3} color='gray.500'>We are trying to establish connection. This may take upto 2 minutes.</Text>}
                     {error && <div>
                         <Text color='red.500' textAlign='center' fontSize={17} mt={3}>{error}</Text>
                         <Button mt={5} width='full' variant='outline' colorScheme='whiteAlpha' onClick={()=> setReload(!reload)}>Try Again</Button>    
