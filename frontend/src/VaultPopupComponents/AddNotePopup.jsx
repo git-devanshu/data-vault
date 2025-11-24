@@ -121,7 +121,7 @@ export default function AddNotePopup({setShowPopup}) {
                 <input type="text" name='tag' value={tag} onChange={(e)=> setTag(e.target.value)} minLength={3} maxLength={15} className="login-input" />
 
                 <label className="login-label">Note</label>
-                <textarea type="text" name='note' value={note} onChange={(e)=> setNote(e.target.value)} maxLength={2000} required className="login-input" style={{height: '200px'}} />
+                <textarea type="text" name='note' value={note} onChange={(e)=> setNote(e.target.value)} maxLength={15000} required className="login-input" style={{height: '200px'}}/>
 
                 <Button disabled={isLoading} type="submit" onClick={addNote} leftIcon={<PlusSquareIcon />} width='fit-content'>Add</Button>
             </form>

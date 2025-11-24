@@ -181,7 +181,7 @@ export default function UpdateNotePopup({data, setShowPopup}) {
                 <input type="text" name='tag' value={tag} onChange={(e)=> {setTag(e.target.value); setChanged(true)}} minLength={3} maxLength={15} className="login-input" />
 
                 <label className="login-label">Note</label>
-                <textarea type="text" name='note' value={note} onChange={(e)=> {setNote(e.target.value); setChanged(true)}} required maxLength={2000} className="login-input" style={{height: '200px'}} />
+                <textarea type="text" name='note' value={note} onChange={(e)=> {setNote(e.target.value); setChanged(true)}} required maxLength={15000} className="login-input" style={{height: '200px'}} />
 
                 <ButtonGroup>
                     <Button disabled={isLoading} colorScheme='red' onClick={()=> setShowDeleteNotePopup(true)} leftIcon={<DeleteIcon />}>Delete</Button>
