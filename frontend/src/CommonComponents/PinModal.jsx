@@ -74,7 +74,7 @@ export default function PinModal() {
 
                 <div style={{display: 'grid', placeItems: 'center', marginTop: '10px', marginBottom: '10px'}}>
                     <HStack>
-                        <PinInput type="number" value={securityPin} onChange={(value) => setSecurityPin(value)}>
+                        <PinInput type="number" mask value={securityPin} onChange={(value) => setSecurityPin(value)} autoFocus>
                             <PinInputField />
                             <PinInputField />
                             <PinInputField />
