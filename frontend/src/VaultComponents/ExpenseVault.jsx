@@ -27,7 +27,9 @@ import {
     FaFolderOpen,      // Other
     FaChartBar,       // analytics button 
 } from "react-icons/fa";
+import { RiFileTransferLine } from "react-icons/ri";
 import ExpenseAnalyticsPopup from '../VaultPopupComponents/ExpenseAnalyticsPopup';
+import TransferExpensePopup from '../VaultPopupComponents/TransferExpensePopup';
 
 export default function ExpenseVault() {
     const { masterKey, clearMasterKey, trackers, setTrackers, hideRemovedTrackers, hideExpenseDeleteButton } = useAppContext();
@@ -54,6 +56,7 @@ export default function ExpenseVault() {
     const [showHelp, setShowHelp] = useState(false);
 
     const [showAnalytics, setShowAnalytics] = useState(false);
+    const [showTransfer, setShowTransfer] = useState(false);
 
     useEffect(()=> {
         if(!masterKey) return;
@@ -241,8 +244,9 @@ export default function ExpenseVault() {
                 </div>
 
                 <div className='grid-inner-right'>
-                    <input className="login-input" value={query} onChange={(e)=> setQuery(e.target.value)} placeholder='Search Expense' style={{marginRight: '15px'}}/>
-                    <IconButton title='analytics' onClick={()=> {setShowAnalytics(true); }} variant='solid' icon={<FaChartBar />} />
+                    <input className="login-input" value={query} onChange={(e)=> setQuery(e.target.value)} placeholder='Search Expense' />
+                    <IconButton title='analytics' onClick={()=> {setShowAnalytics(true); }} variant='solid' icon={<FaChartBar />} ml={3}/>
+                    <IconButton title='transfer' onClick={()=> {setShowTransfer(true); }} variant='solid' icon={<RiFileTransferLine />} ml={3}/>
                     
                     {(filtered?.length === 0) && <Text color='#aaa' mt={8} textAlign='center'>No Expenses Added.</Text>}
                     
@@ -281,6 +285,9 @@ export default function ExpenseVault() {
 
             {/* Analytics Popup */}
             {showAnalytics && <ExpenseAnalyticsPopup setShowPopup={setShowAnalytics} data={data} trackingAmount={trackers[trackerIndex].trackingAmount} trackerName={trackers[trackerIndex].trackerName} />}
+
+            {/* Transfer Expense Popup */}
+            {showTransfer && <TransferExpensePopup setShowPopup={setShowTransfer} filtered={filtered} fromTracker={trackers[trackerIndex].trackerName} fromTrackerIndex={trackerIndex} />}
 
             {/* Help Popup */}
             {showHelp && <HelpPopup title="Expense Vault Guide" helpText={expenseVaultHelpText} setShowPopup={setShowHelp}/>}

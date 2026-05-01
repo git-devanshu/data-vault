@@ -1,6 +1,6 @@
 const express = require('express');
 const { checkAuthorization } = require('../middlewares/checkAuthorization');
-const { addExpense, deleteExpense, fetchExpenes, updateTrackers } = require('../controllers/expenseControllersV1');
+const { addExpense, deleteExpense, fetchExpenes, updateTrackers, transferExpense } = require('../controllers/expenseControllersV1');
 
 // endpoint prefix : /api/expense
 const expenseRouter = express.Router();
@@ -12,5 +12,7 @@ expenseRouter.post('/v1', checkAuthorization, addExpense);
 expenseRouter.delete('/v1/:id', checkAuthorization, deleteExpense);
 
 expenseRouter.put('/v1/tracker', checkAuthorization, updateTrackers);
+
+expenseRouter.put('/v1/transfer', checkAuthorization, transferExpense);
 
 module.exports = {expenseRouter};

@@ -16,7 +16,8 @@ module.exports = {Expenses};
 expenseData {
     amount,
     spentAt,
-    spentDate
+    spentDate,
+    category
 }
 
 This object is stringified and then encrypted on client side

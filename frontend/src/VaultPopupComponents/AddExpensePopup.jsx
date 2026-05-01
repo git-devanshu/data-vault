@@ -2,18 +2,19 @@ import React, {useState} from 'react'
 import '../CommonComponents/commonStyle.css';
 import { CloseButton, Spacer, Stack, Text, Button } from '@chakra-ui/react';
 import axios from 'axios';
-import { getAuthToken, getBaseURL, primaryAPIVersion } from '../utils/helperFunctions';
+import { getAuthToken, getBaseURL, primaryAPIVersion, getCurrentDate } from '../utils/helperFunctions';
 import { useAppContext } from '../context/AppContext';
 import { encryptData } from '../utils/cipherFunctions';
 import toast from 'react-hot-toast';
 
 export default function AddExpensePopup({setShowPopup, setRefresh, refresh, trackerIndex}) {
     const { trackers, masterKey } = useAppContext();
+    const currentDate = getCurrentDate();
 
     const [data, setData] = useState({
         amount: '',
         spentAt: '',
-        spentDate: '',
+        spentDate: currentDate,
         category: ''
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +52,8 @@ export default function AddExpensePopup({setShowPopup, setRefresh, refresh, trac
                 setData({
                     amount: '',
                     spentAt: '',
-                    spentDate: ''
+                    spentDate: currentDate,
+                    category: ''
                 });
             }
             setIsLoading(false);

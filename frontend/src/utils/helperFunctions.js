@@ -90,7 +90,7 @@ export function getCurrentDate(type){
     var min = date.getMinutes();
 
     if(type === 1){
-        return dd + '-' + (mm+1) + '-' + yy;
+        return dd.toString(10).padStart(2, '0') + '-' + (mm+1).toString(10).padStart(2, '0') + '-' + yy;
     }
     else if(type === 2){
         return dd + ' ' + m_name + ', ' + yy;
@@ -108,6 +108,6 @@ export function getCurrentDate(type){
         return yy + '-' + (mm+1).toString(10).padStart(2, '0');
     }
     else{
-        return yy + '-' + (mm+1) + '-' + dd;
+        return yy + '-' + (mm+1).toString(10).padStart(2, '0') + '-' + dd.toString(10).padStart(2, '0');
     }
 }

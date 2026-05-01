@@ -90,6 +90,29 @@ const updateTrackers = async(req, res) =>{
 }
 
 
+// PUT - /api/expense/v1/transfer
+const transferExpense = async(req, res) =>{
+    try{
+        const {expenseIDsArray, toTrackerIndex, fromTrackerIndex} = req.body;
+
+        if(!expenseIDsArray?.length || toTrackerIndex === fromTrackerIndex){
+            return res.status(400).json({ message : "an error occurred" });
+        }
+
+        await Expenses.updateMany(
+            {_id: { $in: expenseIDsArray }},
+            {$set: { trackerIndex: toTrackerIndex }}
+        );
+
+        res.status(200).json({ message : "expenses transferred" });
+    }
+    catch(error){
+        console.log('Server error', error);
+        res.status(500).json({ message : "something went wrong!" });
+    }
+}
+
+
 // POST - /api/expense/v1/
 // const  = async(req, res) =>{
 //     try{
@@ -106,5 +129,6 @@ module.exports = {
     addExpense,
     fetchExpenes,
     deleteExpense,
-    updateTrackers
+    updateTrackers,
+    transferExpense
 };
